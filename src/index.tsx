@@ -19,7 +19,7 @@ const fallback =   <div className="h-[calc(100vh-64px)]">
     <LoadingSpinner center color="primary"/>
 </div>
 
-ReactDOM.createRoot(document.getElementById('react-test') as HTMLElement).render(
+ReactDOM.createRoot(document.getElementById('digtective') as HTMLElement).render(
     <React.StrictMode>
         <QueryClientProvider client={queryClient}>
             <SnackbarProvider maxSnack={5} anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}>

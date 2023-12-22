@@ -27,5 +27,5 @@
         }
     </script>
 </head>
-<div id="react-test">
+<div id="digtective">
 </div>

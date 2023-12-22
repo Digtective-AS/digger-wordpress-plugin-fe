@@ -49,13 +49,14 @@ const ConnectToDigger = () => {
                     placeholder="Token"
                     disabled={isLoading}
                     className="w-full"
+                    autoComplete="off"
                 />
                 {error && (
                     <p className="text-red">
                         {helperText}
                     </p>
                 )}
-                <CustomButton disabled={isLoading} type="submit" className="mt-5">
+                <CustomButton disabled={isLoading} type="submit" className="mt-4">
                     Connect
                 </CustomButton>
             </form>
