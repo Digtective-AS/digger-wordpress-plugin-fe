@@ -1,4 +1,3 @@
-import {Navigate, useLocation, useSearchParams} from 'react-router-dom';
 import React, { FC, useEffect } from 'react';
 import { useAuthStore } from '../../store/authStore';
 import { dataFetch, dataFetchDigger, onlineDataFetch } from '../../axios/customAxios';
