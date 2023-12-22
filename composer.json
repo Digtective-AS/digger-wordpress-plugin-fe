@@ -1,0 +1,15 @@
+{
+    "name": "art/react-test",
+    "autoload": {
+        "psr-4": {
+            "Art\\ReactTest\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "ArtHoxhaDigtective",
+            "email": "art.hoxha@digtective.com"
+        }
+    ],
+    "require": {}
+}
