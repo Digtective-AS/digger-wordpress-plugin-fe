@@ -38,7 +38,7 @@ const ConnectToDigger = () => {
             </p>
             <form onSubmit={formik.handleSubmit} className="flex flex-col items-start gap-1 my-3 w-full max-w-[500px]">
                 <label htmlFor="token" className="text-primary font-medium">
-                    Token
+                    Token*
                 </label>
                 <input
                     id="token"

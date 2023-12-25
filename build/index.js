@@ -32542,11 +32542,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const App = () => {
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.RouterProvider, {
-    router: _router_tsx__WEBPACK_IMPORTED_MODULE_1__["default"]
-  });
-};
+const App = () => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.RouterProvider, {
+  router: _router_tsx__WEBPACK_IMPORTED_MODULE_1__["default"]
+});
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);
 
 /***/ }),
@@ -32566,6 +32564,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_query__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-query */ "./node_modules/react-query/es/index.js");
 /* harmony import */ var _axios_customAxios_ts__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../axios/customAxios.ts */ "./src/axios/customAxios.ts");
 /* harmony import */ var _requestHelpers_requestHelpers_tsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../requestHelpers/requestHelpers.tsx */ "./src/apiHooks/requestHelpers/requestHelpers.tsx");
+/* harmony import */ var _components_closableEnqueueSnackbar_closableEnqueueSnackbar_tsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/closableEnqueueSnackbar/closableEnqueueSnackbar.tsx */ "./src/components/closableEnqueueSnackbar/closableEnqueueSnackbar.tsx");
+
 
 
 
@@ -32574,17 +32574,17 @@ const useMutateLogin = () => {
   const {
     login
   } = (0,_store_authStore_tsx__WEBPACK_IMPORTED_MODULE_0__.useAuthStore)();
-  return (0,react_query__WEBPACK_IMPORTED_MODULE_1__.useMutation)(postRequest => _axios_customAxios_ts__WEBPACK_IMPORTED_MODULE_2__.authFetch.post('wp-json/digtective/v1/connection', {
+  return (0,react_query__WEBPACK_IMPORTED_MODULE_1__.useMutation)(postRequest => _axios_customAxios_ts__WEBPACK_IMPORTED_MODULE_2__.authFetch.post('auth/validate-token', {
     token: postRequest.token
   }), {
     onSuccess: ({
       data: authResponse
-    }) => {
-      if (!authResponse.data) {
-        // TODO add a middleware that checks AuthResponse.data !== undefined for all API successful responses
-        throw new Error('Missing data!');
+    }, postRequestData) => {
+      if (authResponse.data) {
+        login(postRequestData.token);
+      } else {
+        (0,_components_closableEnqueueSnackbar_closableEnqueueSnackbar_tsx__WEBPACK_IMPORTED_MODULE_4__["default"])('Invalid token', 'error');
       }
-      login(authResponse.data.authorization.token);
     },
     onError: err => {
       (0,_requestHelpers_requestHelpers_tsx__WEBPACK_IMPORTED_MODULE_3__.handleApiError)(err);
@@ -32682,6 +32682,31 @@ const useGetHubspotContactSettingsContentData = () => (0,react_query__WEBPACK_IM
 
 /***/ }),
 
+/***/ "./src/apiHooks/queries/useGetOrganizations.tsx":
+/*!******************************************************!*\
+  !*** ./src/apiHooks/queries/useGetOrganizations.tsx ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react_query__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-query */ "./node_modules/react-query/es/index.js");
+/* harmony import */ var _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../axios/customAxios */ "./src/axios/customAxios.ts");
+
+
+const useGetOrganizationSettings = (identifier, onSuccessRetrieved) => (0,react_query__WEBPACK_IMPORTED_MODULE_0__.useQuery)([`currentUser_${identifier}`], () => _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__.dataFetch.get('organization-settings'), {
+  onSuccess: res => {
+    localStorage.setItem('landingPage', res?.data?.data?.landingPage || '');
+    onSuccessRetrieved?.(res?.data?.data);
+  }
+});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (useGetOrganizationSettings);
+
+/***/ }),
+
 /***/ "./src/apiHooks/requestHelpers/requestHelpers.tsx":
 /*!********************************************************!*\
   !*** ./src/apiHooks/requestHelpers/requestHelpers.tsx ***!
@@ -32763,7 +32788,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const authFetch = axios__WEBPACK_IMPORTED_MODULE_1__["default"].create({
-  baseURL: _config__WEBPACK_IMPORTED_MODULE_0__["default"].wordpressPluginApiUrl,
+  baseURL: _config__WEBPACK_IMPORTED_MODULE_0__["default"].baseCoreApiUrl,
   headers: {
     Accept: 'application/json'
   }
@@ -32950,7 +32975,7 @@ const ConnectToDigger = () => {
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
     htmlFor: "token",
     className: "text-primary font-medium"
-  }, "Token"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+  }, "Token*"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     id: "token",
     name: "token",
     type: "text",
@@ -33092,6 +33117,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _store_authStore__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../store/authStore */ "./src/store/authStore.tsx");
 /* harmony import */ var _axios_customAxios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../axios/customAxios */ "./src/axios/customAxios.ts");
 /* harmony import */ var _axios_axiosInterceptors__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../axios/axiosInterceptors */ "./src/axios/axiosInterceptors.tsx");
+/* harmony import */ var _connectToDigger_connectToDigger_tsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../connectToDigger/connectToDigger.tsx */ "./src/components/connectToDigger/connectToDigger.tsx");
+/* harmony import */ var _apiHooks_queries_useGetOrganizations_tsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../apiHooks/queries/useGetOrganizations.tsx */ "./src/apiHooks/queries/useGetOrganizations.tsx");
+/* harmony import */ var _store_organizationSettingsStore_tsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../store/organizationSettingsStore.tsx */ "./src/store/organizationSettingsStore.tsx");
+/* harmony import */ var _constants_pageIdentifiers_ts__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../constants/pageIdentifiers.ts */ "./src/constants/pageIdentifiers.ts");
+/* harmony import */ var _loadingSpinner_loadingSpinner_tsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../loadingSpinner/loadingSpinner.tsx */ "./src/components/loadingSpinner/loadingSpinner.tsx");
+
+
+
+
+
+
 
 
 
@@ -33100,13 +33136,32 @@ const ProtectedRoute = props => {
   const {
     isLoggedIn
   } = (0,_store_authStore__WEBPACK_IMPORTED_MODULE_1__.useAuthStore)();
+  const setOrganizationSettings = (0,_store_organizationSettingsStore_tsx__WEBPACK_IMPORTED_MODULE_6__.useOrganizationSettingsStore)(state => state.setOrganizationSettings);
+  const onOrganizationSettingsRetrieved = organizationSettingsRetrieved => {
+    setOrganizationSettings(organizationSettingsRetrieved);
+  };
+  const {
+    data: organizationSettings,
+    isLoading: isLoadingOrganizationSettings,
+    isError: isErrorOrganizationSettings
+  } = (0,_apiHooks_queries_useGetOrganizations_tsx__WEBPACK_IMPORTED_MODULE_5__["default"])(_constants_pageIdentifiers_ts__WEBPACK_IMPORTED_MODULE_7__.ORGANIZATION_SETTINGS, onOrganizationSettingsRetrieved);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     _axios_customAxios__WEBPACK_IMPORTED_MODULE_2__.dataFetch.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
     _axios_customAxios__WEBPACK_IMPORTED_MODULE_2__.onlineDataFetch.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
     _axios_customAxios__WEBPACK_IMPORTED_MODULE_2__.dataFetchDigger.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
   }, [isLoggedIn]);
   (0,_axios_axiosInterceptors__WEBPACK_IMPORTED_MODULE_3__["default"])();
-  return props.children;
+  if (!isLoggedIn) return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_connectToDigger_connectToDigger_tsx__WEBPACK_IMPORTED_MODULE_4__["default"], null);
+  if (isLoadingOrganizationSettings) return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "h-[calc(100vh-128px)]"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_loadingSpinner_loadingSpinner_tsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    center: true,
+    color: "primary"
+  }));
+  if (isErrorOrganizationSettings) return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "h-[calc(100vh-128px)]"
+  }, "Something went wrong");
+  if (organizationSettings) return props.children;
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ProtectedRoute);
 
@@ -33626,21 +33681,18 @@ let Env = /*#__PURE__*/function (Env) {
 const rootConfigs = {
   [Env.LOCAL]: {
     baseApiUrl: 'https://test-api-digger-v2.digtective.com/digger-dashboard/api/',
-    baseCoreApiUrl: 'https://test-api-digger-v2.digtective.com/digger-core-api/',
-    baseDiggerApiUrl: 'https://test-api-digger-v2.digtective.com/digger-dashboard/api/',
-    wordpressPluginApiUrl: 'http://localhost/wordpress/'
+    baseCoreApiUrl: 'http://192.168.178.61:8080/digger-core-api/',
+    baseDiggerApiUrl: 'https://test-api-digger-v2.digtective.com/digger-dashboard/api/'
   },
   [Env.TEST]: {
     baseApiUrl: 'https://test-api-digger-v2.digtective.com/digger-dashboard/api/',
     baseCoreApiUrl: 'https://test-api-digger-v2.digtective.com/digger-core-api/',
-    baseDiggerApiUrl: 'https://test-api-digger-v2.digtective.com/digger-dashboard/api/',
-    wordpressPluginApiUrl: 'http://localhost/wordpress/'
+    baseDiggerApiUrl: 'https://test-api-digger-v2.digtective.com/digger-dashboard/api/'
   },
   [Env.PROD]: {
     baseApiUrl: 'https://api-digger-v2.digtective.com/digger-dashboard/api/',
     baseCoreApiUrl: 'https://api-digger-v2.digtective.com/digger-core-api/',
-    baseDiggerApiUrl: 'https://api-digger-v2.digtective.com/digger-dashboard/api/',
-    wordpressPluginApiUrl: 'http://localhost/wordpress/'
+    baseDiggerApiUrl: 'https://api-digger-v2.digtective.com/digger-dashboard/api/'
   }
 };
 function resolveEnv() {
@@ -33741,6 +33793,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   hubspotIntegrationUrl: () => (/* binding */ hubspotIntegrationUrl)
 /* harmony export */ });
 const hubspotIntegrationUrl = 'https://app-eu1.hubspot.com/oauth/authorize?client_id=26f95496-c09f-4569-9ea8-f0971cdebfca&redirect_uri=https://digger-v2.digtective.com/hubspot&scope=forms%20crm.lists.read%20crm.objects.contacts.read%20crm.objects.contacts.write%20crm.schemas.custom.read%20crm.objects.custom.read%20crm.objects.companies.write%20crm.schemas.contacts.read%20crm.lists.write%20crm.objects.companies.read%20crm.objects.deals.read%20crm.objects.deals.write%20crm.schemas.companies.read%20crm.schemas.companies.write%20crm.schemas.contacts.write%20crm.schemas.deals.read%20crm.schemas.deals.write';
+
+/***/ }),
+
+/***/ "./src/constants/pageIdentifiers.ts":
+/*!******************************************!*\
+  !*** ./src/constants/pageIdentifiers.ts ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   HUBSPOT_FORMS_TABLE: () => (/* binding */ HUBSPOT_FORMS_TABLE),
+/* harmony export */   ORGANIZATION_SETTINGS: () => (/* binding */ ORGANIZATION_SETTINGS)
+/* harmony export */ });
+const HUBSPOT_FORMS_TABLE = 'HUBSPOT_FORMS_TABLE';
+const ORGANIZATION_SETTINGS = 'ORGANIZATION_SETTINGS';
 
 /***/ }),
 
@@ -33915,18 +33984,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_tables_hubspotFormsTable_tsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/tables/hubspotFormsTable.tsx */ "./src/components/tables/hubspotFormsTable.tsx");
 /* harmony import */ var _components_buttons_customButton_tsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/buttons/customButton.tsx */ "./src/components/buttons/customButton.tsx");
 /* harmony import */ var _constants_integrationConstants_tsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../constants/integrationConstants.tsx */ "./src/constants/integrationConstants.tsx");
+/* harmony import */ var _store_organizationSettingsStore_tsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../store/organizationSettingsStore.tsx */ "./src/store/organizationSettingsStore.tsx");
+
 
 
 
 
 
 const HubspotTab = () => {
-  const isConnectedToHubspot = true;
-  if (!isConnectedToHubspot) {
+  const organizationSettings = (0,_store_organizationSettingsStore_tsx__WEBPACK_IMPORTED_MODULE_4__.useOrganizationSettingsStore)(state => state.organizationSettings);
+  if (!organizationSettings.isConnectedToHubspot) {
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_buttons_customButton_tsx__WEBPACK_IMPORTED_MODULE_2__.CustomButton, {
       type: "button",
       onClick: () => window.location.replace(_constants_integrationConstants_tsx__WEBPACK_IMPORTED_MODULE_3__.hubspotIntegrationUrl)
-    }, "Connect To Hubspot");
+    }, "Connect to Hubspot");
   }
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_tables_hubspotFormsTable_tsx__WEBPACK_IMPORTED_MODULE_1__["default"], null);
 };
@@ -33947,13 +34018,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var _components_tabs_simpleTabs_tsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/tabs/simpleTabs.tsx */ "./src/components/tabs/simpleTabs.tsx");
 /* harmony import */ var _hubspotTab_tsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./hubspotTab.tsx */ "./src/pages/wordpressTabs/hubspotTab.tsx");
-/* harmony import */ var _components_connectToDigger_connectToDigger_tsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../components/connectToDigger/connectToDigger.tsx */ "./src/components/connectToDigger/connectToDigger.tsx");
-/* harmony import */ var _store_authStore_tsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../store/authStore.tsx */ "./src/store/authStore.tsx");
-
-
 
 
 
@@ -33965,17 +34032,11 @@ var WordpressTabLinks = /*#__PURE__*/function (WordpressTabLinks) {
   return WordpressTabLinks;
 }(WordpressTabLinks || {});
 const MainPage = () => {
-  const location = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useLocation)();
+  const location = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useLocation)();
   const currentTab = location.pathname.split('/').pop();
   const [activePanel, setActivePanel] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(WordpressTabLinks[currentTab] || 0);
-  const {
-    isLoggedIn
-  } = (0,_store_authStore_tsx__WEBPACK_IMPORTED_MODULE_4__.useAuthStore)();
-  if (!isLoggedIn) {
-    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_connectToDigger_connectToDigger_tsx__WEBPACK_IMPORTED_MODULE_3__["default"], null);
-  }
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "bg-white h-[calc(100vh-128px)]  min-h-[500px] w-[calc(100%-20px)]  mt-4"
+    className: "bg-white h-[calc(100vh-128px)] min-h-[500px] w-[calc(100%-20px)]  mt-4"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_tabs_simpleTabs_tsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
     activePanel: activePanel,
     setActivePanel: setActivePanel,
@@ -33984,12 +34045,14 @@ const MainPage = () => {
       href: 'hubspot',
       identifierName: 'hubspot-panel',
       renderedComponent: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_hubspotTab_tsx__WEBPACK_IMPORTED_MODULE_2__["default"], null)
-    }, {
-      tabLabel: 'Google',
-      href: 'google',
-      identifierName: 'google-panel',
-      renderedComponent: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, " google ")
-    }]
+    }
+    // {
+    //     tabLabel: 'Google',
+    //     href: 'google',
+    //     identifierName: 'google-panel',
+    //     renderedComponent: <div> google </div>
+    // },
+    ]
   }));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MainPage);
@@ -34096,6 +34159,28 @@ const useAuthStore = (0,zustand__WEBPACK_IMPORTED_MODULE_0__.create)(set => ({
       };
     });
   }
+}));
+
+/***/ }),
+
+/***/ "./src/store/organizationSettingsStore.tsx":
+/*!*************************************************!*\
+  !*** ./src/store/organizationSettingsStore.tsx ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   useOrganizationSettingsStore: () => (/* binding */ useOrganizationSettingsStore)
+/* harmony export */ });
+/* harmony import */ var zustand__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! zustand */ "./node_modules/zustand/esm/index.mjs");
+
+const useOrganizationSettingsStore = (0,zustand__WEBPACK_IMPORTED_MODULE_0__.create)(set => ({
+  organizationSettings: {},
+  setOrganizationSettings: newOrganizationSettings => set(() => ({
+    organizationSettings: newOrganizationSettings
+  }))
 }));
 
 /***/ }),

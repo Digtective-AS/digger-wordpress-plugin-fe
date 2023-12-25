@@ -22,17 +22,9 @@ const MainPage = () => {
     const location = useLocation();
     const currentTab = location.pathname.split('/').pop();
     const [activePanel, setActivePanel] = useState<number>(WordpressTabLinks[currentTab as keyof typeof WordpressTabLinks] || 0);
-    const { isLoggedIn } = useAuthStore();
-
-    if (!isLoggedIn) {
-        return (
-            <ConnectToDigger/>
-        )
-    }
-
 
     return (
-        <div className="bg-white h-[calc(100vh-128px)]  min-h-[500px] w-[calc(100%-20px)]  mt-4">
+        <div className="bg-white h-[calc(100vh-128px)] min-h-[500px] w-[calc(100%-20px)]  mt-4">
             <SimpleTabs
                 activePanel={activePanel}
                 setActivePanel={setActivePanel}
@@ -43,12 +35,12 @@ const MainPage = () => {
                         identifierName: 'hubspot-panel',
                         renderedComponent: <HubspotTab/>,
                     },
-                    {
-                        tabLabel: 'Google',
-                        href: 'google',
-                        identifierName: 'google-panel',
-                        renderedComponent: <div> google </div>
-                    },
+                    // {
+                    //     tabLabel: 'Google',
+                    //     href: 'google',
+                    //     identifierName: 'google-panel',
+                    //     renderedComponent: <div> google </div>
+                    // },
                 ]}
             />
         </div>

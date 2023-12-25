@@ -2,7 +2,6 @@ export interface EnvConfig {
     readonly baseApiUrl: string;
     readonly baseCoreApiUrl?: string;
     readonly baseDiggerApiUrl?: string;
-    readonly wordpressPluginApiUrl?: string;
 }
 
 export enum Env {
@@ -16,21 +15,18 @@ export type Config = Record<Env, EnvConfig>;
 const rootConfigs: Config = {
     [Env.LOCAL]: {
         baseApiUrl: 'https://test-api-digger-v2.digtective.com/digger-dashboard/api/',
-        baseCoreApiUrl: 'https://test-api-digger-v2.digtective.com/digger-core-api/',
+        baseCoreApiUrl: 'http://192.168.178.61:8080/digger-core-api/',
         baseDiggerApiUrl: 'https://test-api-digger-v2.digtective.com/digger-dashboard/api/',
-        wordpressPluginApiUrl: 'http://localhost/wordpress/',
     },
     [Env.TEST]: {
         baseApiUrl: 'https://test-api-digger-v2.digtective.com/digger-dashboard/api/',
         baseCoreApiUrl: 'https://test-api-digger-v2.digtective.com/digger-core-api/',
         baseDiggerApiUrl: 'https://test-api-digger-v2.digtective.com/digger-dashboard/api/',
-        wordpressPluginApiUrl: 'http://localhost/wordpress/',
     },
     [Env.PROD]: {
         baseApiUrl: 'https://api-digger-v2.digtective.com/digger-dashboard/api/',
         baseCoreApiUrl: 'https://api-digger-v2.digtective.com/digger-core-api/',
         baseDiggerApiUrl: 'https://api-digger-v2.digtective.com/digger-dashboard/api/',
-        wordpressPluginApiUrl: 'http://localhost/wordpress/',
     },
 };
 

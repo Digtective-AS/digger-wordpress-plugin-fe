@@ -2,7 +2,7 @@ import axios from 'axios';
 import config from '../config';
 
 export const authFetch = axios.create({
-    baseURL: config.wordpressPluginApiUrl,
+    baseURL: config.baseCoreApiUrl,
     headers: {
         Accept: 'application/json',
     },
