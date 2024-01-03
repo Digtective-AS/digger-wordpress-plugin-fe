@@ -1,11 +1,5 @@
 import axios from 'axios';
-import config, {Config} from '../config';
-
-const rootConfigs = {
-    baseApiUrl: 'https://api-digger-v2.digtective.com/digger-dashboard/api/',
-    baseCoreApiUrl: 'https://api-digger-v2.digtective.com/digger-core-api/',
-    baseDiggerApiUrl: 'https://api-digger-v2.digtective.com/digger-dashboard/api/',
-};
+import {rootConfigs} from "../config.ts";
 
 export const authFetch = axios.create({
     baseURL: rootConfigs.baseCoreApiUrl,
@@ -31,7 +25,7 @@ export const dataFetchDigger = axios.create({
 });
 
 export const onlineDataFetch = axios.create({
-    baseURL: config.baseCoreApiUrl,
+    baseURL: rootConfigs.baseCoreApiUrl,
     headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`,

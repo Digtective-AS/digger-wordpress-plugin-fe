@@ -32785,36 +32785,31 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   onlineDataFetch: () => (/* binding */ onlineDataFetch)
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
-Object(function webpackMissingModule() { var e = new Error("Cannot find module '../config'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+/* harmony import */ var _config_ts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../config.ts */ "./src/config.ts");
 
 
-const rootConfigs = {
-  baseApiUrl: 'https://api-digger-v2.digtective.com/digger-dashboard/api/',
-  baseCoreApiUrl: 'https://api-digger-v2.digtective.com/digger-core-api/',
-  baseDiggerApiUrl: 'https://api-digger-v2.digtective.com/digger-dashboard/api/'
-};
 const authFetch = axios__WEBPACK_IMPORTED_MODULE_1__["default"].create({
-  baseURL: rootConfigs.baseCoreApiUrl,
+  baseURL: _config_ts__WEBPACK_IMPORTED_MODULE_0__.rootConfigs.baseCoreApiUrl,
   headers: {
     Accept: 'application/json'
   }
 });
 const dataFetch = axios__WEBPACK_IMPORTED_MODULE_1__["default"].create({
-  baseURL: rootConfigs.baseApiUrl,
+  baseURL: _config_ts__WEBPACK_IMPORTED_MODULE_0__.rootConfigs.baseApiUrl,
   headers: {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${localStorage.getItem('token')}`
   }
 });
 const dataFetchDigger = axios__WEBPACK_IMPORTED_MODULE_1__["default"].create({
-  baseURL: rootConfigs.baseDiggerApiUrl,
+  baseURL: _config_ts__WEBPACK_IMPORTED_MODULE_0__.rootConfigs.baseDiggerApiUrl,
   headers: {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${localStorage.getItem('token')}`
   }
 });
 const onlineDataFetch = axios__WEBPACK_IMPORTED_MODULE_1__["default"].create({
-  baseURL: Object(function webpackMissingModule() { var e = new Error("Cannot find module '../config'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()),
+  baseURL: _config_ts__WEBPACK_IMPORTED_MODULE_0__.rootConfigs.baseCoreApiUrl,
   headers: {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -33663,6 +33658,25 @@ __webpack_require__.r(__webpack_exports__);
 const digtectiveTokenValidationSchema = () => yup__WEBPACK_IMPORTED_MODULE_0__.object({
   token: yup__WEBPACK_IMPORTED_MODULE_0__.string().required("Input is required")
 });
+
+/***/ }),
+
+/***/ "./src/config.ts":
+/*!***********************!*\
+  !*** ./src/config.ts ***!
+  \***********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   rootConfigs: () => (/* binding */ rootConfigs)
+/* harmony export */ });
+const rootConfigs = {
+  baseApiUrl: 'https://api-digger-v2.digtective.com/digger-dashboard/api/',
+  baseCoreApiUrl: 'https://api-digger-v2.digtective.com/digger-core-api/',
+  baseDiggerApiUrl: 'https://api-digger-v2.digtective.com/digger-dashboard/api/'
+};
 
 /***/ }),
 
