@@ -6,11 +6,11 @@ import ProtectedRoute from "./components/protectedRoutes/protectedRoute.tsx";
 
 const router = createBrowserRouter([
     {
-        path: '/wordpress/wp-admin/admin.php',
+        path: '/wp-admin/admin.php',
         element: <ProtectedRoute>
             <MainPage/>
         </ProtectedRoute>,
-        errorElement: <div> Not found... </div>,
+        errorElement: <div> Something went wrong... </div>,
     },
 ]);
 

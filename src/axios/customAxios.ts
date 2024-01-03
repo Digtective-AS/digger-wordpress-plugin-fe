@@ -1,15 +1,21 @@
 import axios from 'axios';
-import config from '../config';
+import config, {Config} from '../config';
+
+const rootConfigs = {
+    baseApiUrl: 'https://api-digger-v2.digtective.com/digger-dashboard/api/',
+    baseCoreApiUrl: 'https://api-digger-v2.digtective.com/digger-core-api/',
+    baseDiggerApiUrl: 'https://api-digger-v2.digtective.com/digger-dashboard/api/',
+};
 
 export const authFetch = axios.create({
-    baseURL: config.baseCoreApiUrl,
+    baseURL: rootConfigs.baseCoreApiUrl,
     headers: {
         Accept: 'application/json',
     },
 });
 
 export const dataFetch = axios.create({
-    baseURL: config.baseApiUrl,
+    baseURL: rootConfigs.baseApiUrl,
     headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -17,7 +23,7 @@ export const dataFetch = axios.create({
 });
 
 export const dataFetchDigger = axios.create({
-    baseURL: config.baseDiggerApiUrl,
+    baseURL: rootConfigs.baseDiggerApiUrl,
     headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`,

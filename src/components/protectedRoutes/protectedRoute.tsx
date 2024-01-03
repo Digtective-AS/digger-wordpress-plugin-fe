@@ -25,7 +25,7 @@ const ProtectedRoute: FC<ProtectedRouteProps> = (props) => {
         data: organizationSettings,
         isLoading: isLoadingOrganizationSettings,
         isError: isErrorOrganizationSettings,
-    } = useGetOrganizationSettings(ORGANIZATION_SETTINGS, onOrganizationSettingsRetrieved);
+    } = useGetOrganizationSettings(ORGANIZATION_SETTINGS, isLoggedIn, onOrganizationSettingsRetrieved);
 
     useEffect(() => {
         dataFetch.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;

@@ -32697,7 +32697,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../axios/customAxios */ "./src/axios/customAxios.ts");
 
 
-const useGetOrganizationSettings = (identifier, onSuccessRetrieved) => (0,react_query__WEBPACK_IMPORTED_MODULE_0__.useQuery)([`currentUser_${identifier}`], () => _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__.dataFetch.get('organization-settings'), {
+const useGetOrganizationSettings = (identifier, isLoggedIn, onSuccessRetrieved) => (0,react_query__WEBPACK_IMPORTED_MODULE_0__.useQuery)([`currentUser_${identifier}`], () => _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__.dataFetch.get('organization-settings'), {
+  enabled: isLoggedIn,
   onSuccess: res => {
     localStorage.setItem('landingPage', res?.data?.data?.landingPage || '');
     onSuccessRetrieved?.(res?.data?.data);
@@ -32787,21 +32788,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../config */ "./src/config.ts");
 
 
+const rootConfigs = {
+  baseApiUrl: 'https://api-digger-v2.digtective.com/digger-dashboard/api/',
+  baseCoreApiUrl: 'https://api-digger-v2.digtective.com/digger-core-api/',
+  baseDiggerApiUrl: 'https://api-digger-v2.digtective.com/digger-dashboard/api/'
+};
 const authFetch = axios__WEBPACK_IMPORTED_MODULE_1__["default"].create({
-  baseURL: _config__WEBPACK_IMPORTED_MODULE_0__["default"].baseCoreApiUrl,
+  baseURL: rootConfigs.baseCoreApiUrl,
   headers: {
     Accept: 'application/json'
   }
 });
 const dataFetch = axios__WEBPACK_IMPORTED_MODULE_1__["default"].create({
-  baseURL: _config__WEBPACK_IMPORTED_MODULE_0__["default"].baseApiUrl,
+  baseURL: rootConfigs.baseApiUrl,
   headers: {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${localStorage.getItem('token')}`
   }
 });
 const dataFetchDigger = axios__WEBPACK_IMPORTED_MODULE_1__["default"].create({
-  baseURL: _config__WEBPACK_IMPORTED_MODULE_0__["default"].baseDiggerApiUrl,
+  baseURL: rootConfigs.baseDiggerApiUrl,
   headers: {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -33144,7 +33150,7 @@ const ProtectedRoute = props => {
     data: organizationSettings,
     isLoading: isLoadingOrganizationSettings,
     isError: isErrorOrganizationSettings
-  } = (0,_apiHooks_queries_useGetOrganizations_tsx__WEBPACK_IMPORTED_MODULE_5__["default"])(_constants_pageIdentifiers_ts__WEBPACK_IMPORTED_MODULE_7__.ORGANIZATION_SETTINGS, onOrganizationSettingsRetrieved);
+  } = (0,_apiHooks_queries_useGetOrganizations_tsx__WEBPACK_IMPORTED_MODULE_5__["default"])(_constants_pageIdentifiers_ts__WEBPACK_IMPORTED_MODULE_7__.ORGANIZATION_SETTINGS, isLoggedIn, onOrganizationSettingsRetrieved);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     _axios_customAxios__WEBPACK_IMPORTED_MODULE_2__.dataFetch.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
     _axios_customAxios__WEBPACK_IMPORTED_MODULE_2__.onlineDataFetch.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
@@ -34116,9 +34122,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const router = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.createBrowserRouter)([{
-  path: '/wordpress/wp-admin/admin.php',
+  path: '/wp-admin/admin.php',
   element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_protectedRoutes_protectedRoute_tsx__WEBPACK_IMPORTED_MODULE_2__["default"], null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_pages_wordpressTabs_mainPage_tsx__WEBPACK_IMPORTED_MODULE_1__["default"], null)),
-  errorElement: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, " Not found... ")
+  errorElement: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, " Something went wrong... ")
 }]);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (router);
 
