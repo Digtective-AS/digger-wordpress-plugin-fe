@@ -32785,7 +32785,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   onlineDataFetch: () => (/* binding */ onlineDataFetch)
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../config */ "./src/config.ts");
+Object(function webpackMissingModule() { var e = new Error("Cannot find module '../config'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
 
 
 const rootConfigs = {
@@ -32814,7 +32814,7 @@ const dataFetchDigger = axios__WEBPACK_IMPORTED_MODULE_1__["default"].create({
   }
 });
 const onlineDataFetch = axios__WEBPACK_IMPORTED_MODULE_1__["default"].create({
-  baseURL: _config__WEBPACK_IMPORTED_MODULE_0__["default"].baseCoreApiUrl,
+  baseURL: Object(function webpackMissingModule() { var e = new Error("Cannot find module '../config'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()),
   headers: {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -33663,55 +33663,6 @@ __webpack_require__.r(__webpack_exports__);
 const digtectiveTokenValidationSchema = () => yup__WEBPACK_IMPORTED_MODULE_0__.object({
   token: yup__WEBPACK_IMPORTED_MODULE_0__.string().required("Input is required")
 });
-
-/***/ }),
-
-/***/ "./src/config.ts":
-/*!***********************!*\
-  !*** ./src/config.ts ***!
-  \***********************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Env: () => (/* binding */ Env),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-let Env = /*#__PURE__*/function (Env) {
-  Env["LOCAL"] = "local";
-  Env["TEST"] = "test";
-  Env["PROD"] = "prod";
-  return Env;
-}({});
-const rootConfigs = {
-  [Env.LOCAL]: {
-    baseApiUrl: 'https://test-api-digger-v2.digtective.com/digger-dashboard/api/',
-    baseCoreApiUrl: 'http://192.168.178.61:8080/digger-core-api/',
-    baseDiggerApiUrl: 'https://test-api-digger-v2.digtective.com/digger-dashboard/api/'
-  },
-  [Env.TEST]: {
-    baseApiUrl: 'https://test-api-digger-v2.digtective.com/digger-dashboard/api/',
-    baseCoreApiUrl: 'https://test-api-digger-v2.digtective.com/digger-core-api/',
-    baseDiggerApiUrl: 'https://test-api-digger-v2.digtective.com/digger-dashboard/api/'
-  },
-  [Env.PROD]: {
-    baseApiUrl: 'https://api-digger-v2.digtective.com/digger-dashboard/api/',
-    baseCoreApiUrl: 'https://api-digger-v2.digtective.com/digger-core-api/',
-    baseDiggerApiUrl: 'https://api-digger-v2.digtective.com/digger-dashboard/api/'
-  }
-};
-function resolveEnv() {
-  switch (window.location.host) {
-    case 'digger-v2.digtective.com':
-      return Env.PROD;
-    case 'test-digger-v2.digtective.com':
-      return Env.TEST;
-    default:
-      return Env.LOCAL;
-  }
-}
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (rootConfigs[resolveEnv()]);
 
 /***/ }),
 
