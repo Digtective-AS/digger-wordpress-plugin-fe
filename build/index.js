@@ -34038,6 +34038,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const router = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.createBrowserRouter)([{
   path: '/wp-admin/admin.php',
+  // path: '/wordpress/wp-admin/admin.php',
   element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_protectedRoutes_protectedRoute_tsx__WEBPACK_IMPORTED_MODULE_2__["default"], null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_pages_wordpressTabs_mainPage_tsx__WEBPACK_IMPORTED_MODULE_1__["default"], null)),
   errorElement: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, " Something went wrong... ")
 }]);
