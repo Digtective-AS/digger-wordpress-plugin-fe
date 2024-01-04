@@ -32574,7 +32574,7 @@ const useMutateLogin = () => {
   const {
     login
   } = (0,_store_authStore_tsx__WEBPACK_IMPORTED_MODULE_0__.useAuthStore)();
-  return (0,react_query__WEBPACK_IMPORTED_MODULE_1__.useMutation)(postRequest => _axios_customAxios_ts__WEBPACK_IMPORTED_MODULE_2__.authFetch.post('auth/validate-token', {
+  return (0,react_query__WEBPACK_IMPORTED_MODULE_1__.useMutation)(postRequest => _axios_customAxios_ts__WEBPACK_IMPORTED_MODULE_2__.authFetch.post('/wp-json/digtective/v1/connection', {
     token: postRequest.token
   }), {
     onSuccess: ({
@@ -32604,88 +32604,43 @@ const useMutateLogin = () => {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   useGetHubspotContactSettingsContentData: () => (/* binding */ useGetHubspotContactSettingsContentData),
-/* harmony export */   useGetHubspotContactSettingsFormData: () => (/* binding */ useGetHubspotContactSettingsFormData),
 /* harmony export */   useGetHubspotFormEmbedData: () => (/* binding */ useGetHubspotFormEmbedData),
 /* harmony export */   useGetHubspotForms: () => (/* binding */ useGetHubspotForms),
-/* harmony export */   useGetHubspotPipelineOptions: () => (/* binding */ useGetHubspotPipelineOptions),
-/* harmony export */   useGetHubspotPipelineStages: () => (/* binding */ useGetHubspotPipelineStages),
-/* harmony export */   useGetHubspotPipelineStagesMapped: () => (/* binding */ useGetHubspotPipelineStagesMapped)
+/* harmony export */   useIsConnectedToHubspot: () => (/* binding */ useIsConnectedToHubspot)
 /* harmony export */ });
 /* harmony import */ var react_query__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-query */ "./node_modules/react-query/es/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../axios/customAxios */ "./src/axios/customAxios.ts");
 /* harmony import */ var _constants_hookConstants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../constants/hookConstants */ "./src/constants/hookConstants.ts");
+/* harmony import */ var _constants_pageIdentifiers_ts__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../constants/pageIdentifiers.ts */ "./src/constants/pageIdentifiers.ts");
+
 
 
 
 
 const useGetHubspotForms = (identifier, rows, page) => {
-  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useNavigate)();
+  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_4__.useNavigate)();
   const queryParams = new URLSearchParams();
   (0,_constants_hookConstants__WEBPACK_IMPORTED_MODULE_2__.appendQueryParamIfNotEmpty)(queryParams, 'rows', rows.toString());
-  (0,_constants_hookConstants__WEBPACK_IMPORTED_MODULE_2__.appendQueryParamIfNotEmpty)(queryParams, 'page', page.toString());
+  (0,_constants_hookConstants__WEBPACK_IMPORTED_MODULE_2__.appendQueryParamIfNotEmpty)(queryParams, 'onPage', page.toString());
   const queryKey = (0,_constants_hookConstants__WEBPACK_IMPORTED_MODULE_2__.generateQueryKey)(identifier, queryParams);
-  return (0,react_query__WEBPACK_IMPORTED_MODULE_0__.useQuery)([`hubspot_forms_${queryKey}`], () => _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__.dataFetchDigger.get(`/hubspot/forms?${queryParams}`), {
+  return (0,react_query__WEBPACK_IMPORTED_MODULE_0__.useQuery)([`hubspot_forms_${queryKey}`], () => _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__.dataFetchDigger.get(`/hubspot/forms?rows=${rows}&page=${page}`), {
     onSuccess: () => {
-      navigate(`${window.location.pathname}?${queryParams.toString()}`, {
+      navigate(`${window.location.pathname}?page=${_constants_pageIdentifiers_ts__WEBPACK_IMPORTED_MODULE_3__.PLUGIN_URL_PAGE_NAME}&rows=${rows}&onPage=${page}`, {
         replace: true
       });
     }
   });
 };
 const useGetHubspotFormEmbedData = () => (0,react_query__WEBPACK_IMPORTED_MODULE_0__.useQuery)(['hubspot_form_embed'], () => _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__.dataFetchDigger.get('/hubspot/embed'));
-const useGetHubspotPipelineOptions = (identifier, hubspotPipelineId) => {
-  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useNavigate)();
-  return (0,react_query__WEBPACK_IMPORTED_MODULE_0__.useQuery)([`organization_${identifier}`], () => _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__.dataFetchDigger.get('/hubspot/pipelines'), {
-    onSuccess: () => {
-      navigate(`${window.location.pathname}?hubspotPipelineId=${hubspotPipelineId || ''}`, {
-        replace: true
-      });
-    }
-  });
-};
-const useGetHubspotPipelineStages = (identifier, hubspotPipelineId) => {
-  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useNavigate)();
-  const queryParams = new URLSearchParams();
-  if (hubspotPipelineId) {
-    (0,_constants_hookConstants__WEBPACK_IMPORTED_MODULE_2__.appendQueryParamIfNotEmpty)(queryParams, 'hubspotPipelineId', hubspotPipelineId.trim());
-  }
-  const queryKey = (0,_constants_hookConstants__WEBPACK_IMPORTED_MODULE_2__.generateQueryKey)(identifier, queryParams);
-  return (0,react_query__WEBPACK_IMPORTED_MODULE_0__.useQuery)([`hubspot_pipeline_stages_${queryKey}`], () => _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__.dataFetchDigger.get(`/hubspot/pipeline/${hubspotPipelineId}/stages`), {
-    onSuccess: () => {
-      navigate(`${window.location.pathname}?${queryParams.toString()}`, {
-        replace: true
-      });
-    },
-    enabled: !!hubspotPipelineId
-  });
-};
-const useGetHubspotPipelineStagesMapped = (identifier, hubspotPipelineId) => {
-  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useNavigate)();
-  const queryParams = new URLSearchParams();
-  if (hubspotPipelineId) {
-    (0,_constants_hookConstants__WEBPACK_IMPORTED_MODULE_2__.appendQueryParamIfNotEmpty)(queryParams, 'hubspotPipelineId', hubspotPipelineId.trim());
-  }
-  const queryKey = (0,_constants_hookConstants__WEBPACK_IMPORTED_MODULE_2__.generateQueryKey)(identifier, queryParams);
-  return (0,react_query__WEBPACK_IMPORTED_MODULE_0__.useQuery)([`hubspot_pipeline_stages_mapped_${queryKey}`], () => _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__.dataFetchDigger.get(`/hubspot/pipeline/${hubspotPipelineId}/stages/mapped`), {
-    onSuccess: () => {
-      navigate(`${window.location.pathname}?${queryParams.toString()}`, {
-        replace: true
-      });
-    },
-    enabled: !!hubspotPipelineId
-  });
-};
-const useGetHubspotContactSettingsFormData = () => (0,react_query__WEBPACK_IMPORTED_MODULE_0__.useQuery)(['hubspot_contact_settings_form'], () => _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__.dataFetchDigger.get('/hubspot/organization-settings'));
-const useGetHubspotContactSettingsContentData = () => (0,react_query__WEBPACK_IMPORTED_MODULE_0__.useQuery)(['hubspot_contact_settings_content'], () => _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__.dataFetchDigger.get('/hubspot/contact-fields'));
+const useIsConnectedToHubspot = () => (0,react_query__WEBPACK_IMPORTED_MODULE_0__.useQuery)(['hubspot_form_embed_is_connected'], () => _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__.dataFetchDigger.get('/hubspot/embed'));
 
 /***/ }),
 
-/***/ "./src/apiHooks/queries/useGetOrganizations.tsx":
-/*!******************************************************!*\
-  !*** ./src/apiHooks/queries/useGetOrganizations.tsx ***!
-  \******************************************************/
+/***/ "./src/apiHooks/queries/useGetToken.tsx":
+/*!**********************************************!*\
+  !*** ./src/apiHooks/queries/useGetToken.tsx ***!
+  \**********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -32697,14 +32652,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../axios/customAxios */ "./src/axios/customAxios.ts");
 
 
-const useGetOrganizationSettings = (identifier, isLoggedIn, onSuccessRetrieved) => (0,react_query__WEBPACK_IMPORTED_MODULE_0__.useQuery)([`currentUser_${identifier}`], () => _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__.dataFetch.get('organization-settings'), {
-  enabled: isLoggedIn,
+const useGetToken = (identifier, onSuccessRetrievedToken) => (0,react_query__WEBPACK_IMPORTED_MODULE_0__.useQuery)([`currentUser_${identifier}`], () => _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__.authFetch.get('/wp-json/digtective/v1/get-token'), {
   onSuccess: res => {
-    localStorage.setItem('landingPage', res?.data?.data?.landingPage || '');
-    onSuccessRetrieved?.(res?.data?.data);
+    onSuccessRetrievedToken?.(res.data);
   }
 });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (useGetOrganizationSettings);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (useGetToken);
 
 /***/ }),
 
@@ -32753,18 +32706,30 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const handleErrorResponse = (error, logout) => {
+  console.log(error);
+  if (error?.response?.status === 401) {
+    logout();
+    (0,_components_closableEnqueueSnackbar_closableEnqueueSnackbar__WEBPACK_IMPORTED_MODULE_1__["default"])('Your session has expired', 'error');
+  }
+  return Promise.reject(error);
+};
 const axiosInterceptor = () => {
   const {
     logout
   } = (0,_store_authStore__WEBPACK_IMPORTED_MODULE_2__.useAuthStore)();
-  _customAxios__WEBPACK_IMPORTED_MODULE_0__.dataFetch.interceptors.response.use(response => response, error => {
-    console.log(error);
+  _customAxios__WEBPACK_IMPORTED_MODULE_0__.authFetch.interceptors.request.use(config => {
+    // @ts-ignore
+    config.headers.set("X-WP-Nonce", wpNonce);
+    return config;
+  });
+  _customAxios__WEBPACK_IMPORTED_MODULE_0__.authFetch.interceptors.response.use(response => response, error => {
     if (error?.response?.status === 401) {
-      logout();
-      (0,_components_closableEnqueueSnackbar_closableEnqueueSnackbar__WEBPACK_IMPORTED_MODULE_1__["default"])("Your session has expired", 'error');
+      (0,_components_closableEnqueueSnackbar_closableEnqueueSnackbar__WEBPACK_IMPORTED_MODULE_1__["default"])('You are not an admin', 'error');
     }
     return Promise.reject(error);
   });
+  _customAxios__WEBPACK_IMPORTED_MODULE_0__.dataFetchDigger.interceptors.response.use(response => response, error => handleErrorResponse(error, logout));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (axiosInterceptor);
 
@@ -32780,39 +32745,23 @@ const axiosInterceptor = () => {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   authFetch: () => (/* binding */ authFetch),
-/* harmony export */   dataFetch: () => (/* binding */ dataFetch),
-/* harmony export */   dataFetchDigger: () => (/* binding */ dataFetchDigger),
-/* harmony export */   onlineDataFetch: () => (/* binding */ onlineDataFetch)
+/* harmony export */   dataFetchDigger: () => (/* binding */ dataFetchDigger)
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
 /* harmony import */ var _config_ts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../config.ts */ "./src/config.ts");
 
 
 const authFetch = axios__WEBPACK_IMPORTED_MODULE_1__["default"].create({
-  baseURL: _config_ts__WEBPACK_IMPORTED_MODULE_0__.rootConfigs.baseCoreApiUrl,
+  baseURL: `${window.location.origin}/wordpress/`,
+  // baseURL: `${window.location.origin}/`,
   headers: {
     Accept: 'application/json'
-  }
-});
-const dataFetch = axios__WEBPACK_IMPORTED_MODULE_1__["default"].create({
-  baseURL: _config_ts__WEBPACK_IMPORTED_MODULE_0__.rootConfigs.baseApiUrl,
-  headers: {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('token')}`
   }
 });
 const dataFetchDigger = axios__WEBPACK_IMPORTED_MODULE_1__["default"].create({
   baseURL: _config_ts__WEBPACK_IMPORTED_MODULE_0__.rootConfigs.baseDiggerApiUrl,
   headers: {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('token')}`
-  }
-});
-const onlineDataFetch = axios__WEBPACK_IMPORTED_MODULE_1__["default"].create({
-  baseURL: _config_ts__WEBPACK_IMPORTED_MODULE_0__.rootConfigs.baseCoreApiUrl,
-  headers: {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('token')}`
+    'Content-Type': 'application/json'
   }
 });
 
@@ -33116,15 +33065,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _store_authStore__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../store/authStore */ "./src/store/authStore.tsx");
-/* harmony import */ var _axios_customAxios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../axios/customAxios */ "./src/axios/customAxios.ts");
-/* harmony import */ var _axios_axiosInterceptors__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../axios/axiosInterceptors */ "./src/axios/axiosInterceptors.tsx");
-/* harmony import */ var _connectToDigger_connectToDigger_tsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../connectToDigger/connectToDigger.tsx */ "./src/components/connectToDigger/connectToDigger.tsx");
-/* harmony import */ var _apiHooks_queries_useGetOrganizations_tsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../apiHooks/queries/useGetOrganizations.tsx */ "./src/apiHooks/queries/useGetOrganizations.tsx");
-/* harmony import */ var _store_organizationSettingsStore_tsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../store/organizationSettingsStore.tsx */ "./src/store/organizationSettingsStore.tsx");
-/* harmony import */ var _constants_pageIdentifiers_ts__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../constants/pageIdentifiers.ts */ "./src/constants/pageIdentifiers.ts");
-/* harmony import */ var _loadingSpinner_loadingSpinner_tsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../loadingSpinner/loadingSpinner.tsx */ "./src/components/loadingSpinner/loadingSpinner.tsx");
-
-
+/* harmony import */ var _connectToDigger_connectToDigger_tsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../connectToDigger/connectToDigger.tsx */ "./src/components/connectToDigger/connectToDigger.tsx");
+/* harmony import */ var _constants_pageIdentifiers_ts__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../constants/pageIdentifiers.ts */ "./src/constants/pageIdentifiers.ts");
+/* harmony import */ var _loadingSpinner_loadingSpinner_tsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../loadingSpinner/loadingSpinner.tsx */ "./src/components/loadingSpinner/loadingSpinner.tsx");
+/* harmony import */ var _apiHooks_queries_useGetToken_tsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../apiHooks/queries/useGetToken.tsx */ "./src/apiHooks/queries/useGetToken.tsx");
+/* harmony import */ var _axios_axiosInterceptors_tsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../axios/axiosInterceptors.tsx */ "./src/axios/axiosInterceptors.tsx");
 
 
 
@@ -33137,32 +33082,27 @@ const ProtectedRoute = props => {
   const {
     isLoggedIn
   } = (0,_store_authStore__WEBPACK_IMPORTED_MODULE_1__.useAuthStore)();
-  const setOrganizationSettings = (0,_store_organizationSettingsStore_tsx__WEBPACK_IMPORTED_MODULE_6__.useOrganizationSettingsStore)(state => state.setOrganizationSettings);
-  const onOrganizationSettingsRetrieved = organizationSettingsRetrieved => {
-    setOrganizationSettings(organizationSettingsRetrieved);
+  const login = (0,_store_authStore__WEBPACK_IMPORTED_MODULE_1__.useAuthStore)(state => state.login);
+  const onFetchedTokenRetrieved = fetchedTokenRetrieved => {
+    login(fetchedTokenRetrieved);
   };
+  (0,_axios_axiosInterceptors_tsx__WEBPACK_IMPORTED_MODULE_6__["default"])();
   const {
-    data: organizationSettings,
-    isLoading: isLoadingOrganizationSettings,
-    isError: isErrorOrganizationSettings
-  } = (0,_apiHooks_queries_useGetOrganizations_tsx__WEBPACK_IMPORTED_MODULE_5__["default"])(_constants_pageIdentifiers_ts__WEBPACK_IMPORTED_MODULE_7__.ORGANIZATION_SETTINGS, isLoggedIn, onOrganizationSettingsRetrieved);
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    _axios_customAxios__WEBPACK_IMPORTED_MODULE_2__.dataFetch.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
-    _axios_customAxios__WEBPACK_IMPORTED_MODULE_2__.onlineDataFetch.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
-    _axios_customAxios__WEBPACK_IMPORTED_MODULE_2__.dataFetchDigger.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
-  }, [isLoggedIn]);
-  (0,_axios_axiosInterceptors__WEBPACK_IMPORTED_MODULE_3__["default"])();
-  if (!isLoggedIn) return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_connectToDigger_connectToDigger_tsx__WEBPACK_IMPORTED_MODULE_4__["default"], null);
-  if (isLoadingOrganizationSettings) return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    data: fetchedToken,
+    isFetching: isLoadingFetchedToken,
+    isError: isErrorFetchedToken
+  } = (0,_apiHooks_queries_useGetToken_tsx__WEBPACK_IMPORTED_MODULE_5__["default"])(_constants_pageIdentifiers_ts__WEBPACK_IMPORTED_MODULE_3__.FETCHED_TOKEN, onFetchedTokenRetrieved);
+  if (isLoadingFetchedToken) return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "h-[calc(100vh-128px)]"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_loadingSpinner_loadingSpinner_tsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_loadingSpinner_loadingSpinner_tsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
     center: true,
     color: "primary"
   }));
-  if (isErrorOrganizationSettings) return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  if (isErrorFetchedToken) return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "h-[calc(100vh-128px)]"
   }, "Something went wrong");
-  if (organizationSettings) return props.children;
+  if (!fetchedToken && !isLoggedIn) return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_connectToDigger_connectToDigger_tsx__WEBPACK_IMPORTED_MODULE_2__["default"], null);
+  return props.children;
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ProtectedRoute);
 
@@ -33276,7 +33216,7 @@ const BasicTable = props => {
       minWidth: '30px'
     },
     onClick: () => {
-      props.onEmbed?.(item);
+      props.onEmbed?.(item.id);
       props.setIsEmbedDialogOpen?.(true);
     }
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
@@ -33635,7 +33575,7 @@ const SimpleTabs = props => {
       className: "h-[16px] object-contain"
     }) : undefined
   })))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_mui_material__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    className: "h-full w-full p-5"
+    className: "h-full w-full"
   }, props.tabs[props.activePanel].renderedComponent));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SimpleTabs);
@@ -33776,11 +33716,15 @@ const hubspotIntegrationUrl = 'https://app-eu1.hubspot.com/oauth/authorize?clien
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   FETCHED_TOKEN: () => (/* binding */ FETCHED_TOKEN),
 /* harmony export */   HUBSPOT_FORMS_TABLE: () => (/* binding */ HUBSPOT_FORMS_TABLE),
-/* harmony export */   ORGANIZATION_SETTINGS: () => (/* binding */ ORGANIZATION_SETTINGS)
+/* harmony export */   ORGANIZATION_SETTINGS: () => (/* binding */ ORGANIZATION_SETTINGS),
+/* harmony export */   PLUGIN_URL_PAGE_NAME: () => (/* binding */ PLUGIN_URL_PAGE_NAME)
 /* harmony export */ });
 const HUBSPOT_FORMS_TABLE = 'HUBSPOT_FORMS_TABLE';
 const ORGANIZATION_SETTINGS = 'ORGANIZATION_SETTINGS';
+const FETCHED_TOKEN = 'FETCHED_TOKEN';
+const PLUGIN_URL_PAGE_NAME = 'digtective-plugin';
 
 /***/ }),
 
@@ -33955,7 +33899,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_tables_hubspotFormsTable_tsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/tables/hubspotFormsTable.tsx */ "./src/components/tables/hubspotFormsTable.tsx");
 /* harmony import */ var _components_buttons_customButton_tsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/buttons/customButton.tsx */ "./src/components/buttons/customButton.tsx");
 /* harmony import */ var _constants_integrationConstants_tsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../constants/integrationConstants.tsx */ "./src/constants/integrationConstants.tsx");
-/* harmony import */ var _store_organizationSettingsStore_tsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../store/organizationSettingsStore.tsx */ "./src/store/organizationSettingsStore.tsx");
+/* harmony import */ var _apiHooks_queries_useGetHubspotForms_ts__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../apiHooks/queries/useGetHubspotForms.ts */ "./src/apiHooks/queries/useGetHubspotForms.ts");
+/* harmony import */ var _components_loadingSpinner_loadingSpinner_tsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../components/loadingSpinner/loadingSpinner.tsx */ "./src/components/loadingSpinner/loadingSpinner.tsx");
+
 
 
 
@@ -33963,8 +33909,25 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const HubspotTab = () => {
-  const organizationSettings = (0,_store_organizationSettingsStore_tsx__WEBPACK_IMPORTED_MODULE_4__.useOrganizationSettingsStore)(state => state.organizationSettings);
-  if (!organizationSettings.isConnectedToHubspot) {
+  const {
+    data,
+    isFetching,
+    isError
+  } = (0,_apiHooks_queries_useGetHubspotForms_ts__WEBPACK_IMPORTED_MODULE_4__.useIsConnectedToHubspot)();
+  if (isFetching) {
+    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "h-[calc(100vh-128px)]"
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_loadingSpinner_loadingSpinner_tsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      center: true,
+      color: "primary"
+    }));
+  }
+  if (isError) {
+    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "h-[calc(100vh-128px)]"
+    }, "Something went wrong");
+  }
+  if (data?.data.status.message !== 'gatheredEmbedData') {
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_buttons_customButton_tsx__WEBPACK_IMPORTED_MODULE_2__.CustomButton, {
       type: "button",
       onClick: () => window.location.replace(_constants_integrationConstants_tsx__WEBPACK_IMPORTED_MODULE_3__.hubspotIntegrationUrl)
@@ -34007,7 +33970,7 @@ const MainPage = () => {
   const currentTab = location.pathname.split('/').pop();
   const [activePanel, setActivePanel] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(WordpressTabLinks[currentTab] || 0);
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "bg-white h-[calc(100vh-128px)] min-h-[500px] w-[calc(100%-20px)]  mt-4"
+    className: "bg-white min-h-[calc(100vh-128px)] w-[calc(100%-20px)] mt-4"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_tabs_simpleTabs_tsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
     activePanel: activePanel,
     setActivePanel: setActivePanel,
@@ -34016,14 +33979,7 @@ const MainPage = () => {
       href: 'hubspot',
       identifierName: 'hubspot-panel',
       renderedComponent: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_hubspotTab_tsx__WEBPACK_IMPORTED_MODULE_2__["default"], null)
-    }
-    // {
-    //     tabLabel: 'Google',
-    //     href: 'google',
-    //     identifierName: 'google-panel',
-    //     renderedComponent: <div> google </div>
-    // },
-    ]
+    }]
   }));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MainPage);
@@ -34043,22 +33999,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! moment */ "moment");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var moment_locale_nb__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! moment/locale/nb */ "./node_modules/moment/locale/nb.js");
-/* harmony import */ var moment_locale_nb__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(moment_locale_nb__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var moment_locale_nb__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! moment/locale/nb */ "./node_modules/moment/locale/nb.js");
+/* harmony import */ var moment_locale_nb__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(moment_locale_nb__WEBPACK_IMPORTED_MODULE_1__);
 
 
 
-
+const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const DateCell = props => {
   const plainDate = props.params;
-  const language = localStorage.getItem('i18nextLng');
-  let formattedDate = moment__WEBPACK_IMPORTED_MODULE_1___default()(plainDate).format('LL');
-  if (language === 'no') {
-    moment__WEBPACK_IMPORTED_MODULE_1___default().locale('nb');
-    formattedDate = moment__WEBPACK_IMPORTED_MODULE_1___default()(plainDate).format('D. MMMM YYYY');
-  }
+  const parsedDate = new Date(plainDate);
+  const formattedDate = `${monthNames[parsedDate.getMonth()]} ${parsedDate.getDate()}, ${parsedDate.getFullYear()}`;
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, formattedDate);
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DateCell);
@@ -34087,7 +34037,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const router = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.createBrowserRouter)([{
-  path: '/wp-admin/admin.php',
+  path: '/wordpress/wp-admin/admin.php',
   element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_protectedRoutes_protectedRoute_tsx__WEBPACK_IMPORTED_MODULE_2__["default"], null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_pages_wordpressTabs_mainPage_tsx__WEBPACK_IMPORTED_MODULE_1__["default"], null)),
   errorElement: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, " Something went wrong... ")
 }]);
@@ -34106,14 +34056,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   useAuthStore: () => (/* binding */ useAuthStore)
 /* harmony export */ });
-/* harmony import */ var zustand__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! zustand */ "./node_modules/zustand/esm/index.mjs");
+/* harmony import */ var zustand__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! zustand */ "./node_modules/zustand/esm/index.mjs");
+/* harmony import */ var _axios_customAxios_ts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../axios/customAxios.ts */ "./src/axios/customAxios.ts");
 
-const useAuthStore = (0,zustand__WEBPACK_IMPORTED_MODULE_0__.create)(set => ({
-  token: localStorage.getItem('token'),
-  isLoggedIn: !!localStorage.getItem('token'),
+
+const useAuthStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)(set => ({
+  token: null,
+  isLoggedIn: false,
   login: async loginToken => {
     set(() => {
-      localStorage.setItem('token', loginToken);
+      _axios_customAxios_ts__WEBPACK_IMPORTED_MODULE_0__.dataFetchDigger.defaults.headers.Authorization = `Bearer ${loginToken}`;
       return {
         token: loginToken,
         isLoggedIn: true
@@ -34122,36 +34074,13 @@ const useAuthStore = (0,zustand__WEBPACK_IMPORTED_MODULE_0__.create)(set => ({
   },
   logout: () => {
     set(() => {
-      localStorage.removeItem('token');
-      localStorage.removeItem('userInitials');
+      _axios_customAxios_ts__WEBPACK_IMPORTED_MODULE_0__.dataFetchDigger.defaults.headers.Authorization = 'Bearer null';
       return {
         token: null,
         isLoggedIn: false
       };
     });
   }
-}));
-
-/***/ }),
-
-/***/ "./src/store/organizationSettingsStore.tsx":
-/*!*************************************************!*\
-  !*** ./src/store/organizationSettingsStore.tsx ***!
-  \*************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   useOrganizationSettingsStore: () => (/* binding */ useOrganizationSettingsStore)
-/* harmony export */ });
-/* harmony import */ var zustand__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! zustand */ "./node_modules/zustand/esm/index.mjs");
-
-const useOrganizationSettingsStore = (0,zustand__WEBPACK_IMPORTED_MODULE_0__.create)(set => ({
-  organizationSettings: {},
-  setOrganizationSettings: newOrganizationSettings => set(() => ({
-    organizationSettings: newOrganizationSettings
-  }))
 }));
 
 /***/ }),
@@ -42040,14 +41969,14 @@ __webpack_require__.r(__webpack_exports__);
             return n === 0
                 ? 0
                 : n === 1
-                ? 1
-                : n === 2
-                ? 2
-                : n % 100 >= 3 && n % 100 <= 10
-                ? 3
-                : n % 100 >= 11
-                ? 4
-                : 5;
+                  ? 1
+                  : n === 2
+                    ? 2
+                    : n % 100 >= 3 && n % 100 <= 10
+                      ? 3
+                      : n % 100 >= 11
+                        ? 4
+                        : 5;
         },
         plurals = {
             s: [
@@ -42297,14 +42226,14 @@ __webpack_require__.r(__webpack_exports__);
             return n === 0
                 ? 0
                 : n === 1
-                ? 1
-                : n === 2
-                ? 2
-                : n % 100 >= 3 && n % 100 <= 10
-                ? 3
-                : n % 100 >= 11
-                ? 4
-                : 5;
+                  ? 1
+                  : n === 2
+                    ? 2
+                    : n % 100 >= 3 && n % 100 <= 10
+                      ? 3
+                      : n % 100 >= 11
+                        ? 4
+                        : 5;
         },
         plurals = {
             s: [
@@ -42523,6 +42452,137 @@ __webpack_require__.r(__webpack_exports__);
     });
 
     return arMa;
+
+})));
+
+
+/***/ }),
+
+/***/ "./node_modules/moment/locale/ar-ps.js":
+/*!*********************************************!*\
+  !*** ./node_modules/moment/locale/ar-ps.js ***!
+  \*********************************************/
+/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
+
+//! moment.js locale configuration
+//! locale : Arabic (Palestine) [ar-ps]
+//! author : Majd Al-Shihabi : https://github.com/majdal
+
+;(function (global, factory) {
+    true ? factory(__webpack_require__(/*! ../moment */ "./node_modules/moment/moment.js")) :
+   0
+}(this, (function (moment) { 'use strict';
+
+    //! moment.js locale configuration
+
+    var symbolMap = {
+            1: '١',
+            2: '٢',
+            3: '٣',
+            4: '٤',
+            5: '٥',
+            6: '٦',
+            7: '٧',
+            8: '٨',
+            9: '٩',
+            0: '٠',
+        },
+        numberMap = {
+            '١': '1',
+            '٢': '2',
+            '٣': '3',
+            '٤': '4',
+            '٥': '5',
+            '٦': '6',
+            '٧': '7',
+            '٨': '8',
+            '٩': '9',
+            '٠': '0',
+        };
+
+    var arPs = moment.defineLocale('ar-ps', {
+        months: 'كانون الثاني_شباط_آذار_نيسان_أيّار_حزيران_تمّوز_آب_أيلول_تشري الأوّل_تشرين الثاني_كانون الأوّل'.split(
+            '_'
+        ),
+        monthsShort:
+            'ك٢_شباط_آذار_نيسان_أيّار_حزيران_تمّوز_آب_أيلول_ت١_ت٢_ك١'.split('_'),
+        weekdays: 'الأحد_الإثنين_الثلاثاء_الأربعاء_الخميس_الجمعة_السبت'.split('_'),
+        weekdaysShort: 'أحد_إثنين_ثلاثاء_أربعاء_خميس_جمعة_سبت'.split('_'),
+        weekdaysMin: 'ح_ن_ث_ر_خ_ج_س'.split('_'),
+        weekdaysParseExact: true,
+        longDateFormat: {
+            LT: 'HH:mm',
+            LTS: 'HH:mm:ss',
+            L: 'DD/MM/YYYY',
+            LL: 'D MMMM YYYY',
+            LLL: 'D MMMM YYYY HH:mm',
+            LLLL: 'dddd D MMMM YYYY HH:mm',
+        },
+        meridiemParse: /ص|م/,
+        isPM: function (input) {
+            return 'م' === input;
+        },
+        meridiem: function (hour, minute, isLower) {
+            if (hour < 12) {
+                return 'ص';
+            } else {
+                return 'م';
+            }
+        },
+        calendar: {
+            sameDay: '[اليوم على الساعة] LT',
+            nextDay: '[غدا على الساعة] LT',
+            nextWeek: 'dddd [على الساعة] LT',
+            lastDay: '[أمس على الساعة] LT',
+            lastWeek: 'dddd [على الساعة] LT',
+            sameElse: 'L',
+        },
+        relativeTime: {
+            future: 'في %s',
+            past: 'منذ %s',
+            s: 'ثوان',
+            ss: '%d ثانية',
+            m: 'دقيقة',
+            mm: '%d دقائق',
+            h: 'ساعة',
+            hh: '%d ساعات',
+            d: 'يوم',
+            dd: '%d أيام',
+            M: 'شهر',
+            MM: '%d أشهر',
+            y: 'سنة',
+            yy: '%d سنوات',
+        },
+        preparse: function (string) {
+            return string
+                .replace(/[٣٤٥٦٧٨٩٠]/g, function (match) {
+                    return numberMap[match];
+                })
+                .split('') // reversed since negative lookbehind not supported everywhere
+                .reverse()
+                .join('')
+                .replace(/[١٢](?![\u062a\u0643])/g, function (match) {
+                    return numberMap[match];
+                })
+                .split('')
+                .reverse()
+                .join('')
+                .replace(/،/g, ',');
+        },
+        postformat: function (string) {
+            return string
+                .replace(/\d/g, function (match) {
+                    return symbolMap[match];
+                })
+                .replace(/,/g, '،');
+        },
+        week: {
+            dow: 0, // Sunday is the first day of the week.
+            doy: 6, // The week that contains Jan 6th is the first week of the year.
+        },
+    });
+
+    return arPs;
 
 })));
 
@@ -42774,14 +42834,14 @@ __webpack_require__.r(__webpack_exports__);
             return n === 0
                 ? 0
                 : n === 1
-                ? 1
-                : n === 2
-                ? 2
-                : n % 100 >= 3 && n % 100 <= 10
-                ? 3
-                : n % 100 >= 11
-                ? 4
-                : 5;
+                  ? 1
+                  : n === 2
+                    ? 2
+                    : n % 100 >= 3 && n % 100 <= 10
+                      ? 3
+                      : n % 100 >= 11
+                        ? 4
+                        : 5;
         },
         plurals = {
             s: [
@@ -43080,8 +43140,8 @@ __webpack_require__.r(__webpack_exports__);
         return num % 10 === 1 && num % 100 !== 11
             ? forms[0]
             : num % 10 >= 2 && num % 10 <= 4 && (num % 100 < 10 || num % 100 >= 20)
-            ? forms[1]
-            : forms[2];
+              ? forms[1]
+              : forms[2];
     }
     function relativeTimeWithPlural(number, withoutSuffix, key) {
         var format = {
@@ -44018,6 +44078,7 @@ __webpack_require__.r(__webpack_exports__);
 //! moment.js locale configuration
 //! locale : Bosnian [bs]
 //! author : Nedim Cholich : https://github.com/frontyard
+//! author : Rasid Redzic : https://github.com/rasidre
 //! based on (hr) translation by Bojan Marković
 
 ;(function (global, factory) {
@@ -44026,6 +44087,17 @@ __webpack_require__.r(__webpack_exports__);
 }(this, (function (moment) { 'use strict';
 
     //! moment.js locale configuration
+
+    function processRelativeTime(number, withoutSuffix, key, isFuture) {
+        switch (key) {
+            case 'm':
+                return withoutSuffix
+                    ? 'jedna minuta'
+                    : isFuture
+                      ? 'jednu minutu'
+                      : 'jedne minute';
+        }
+    }
 
     function translate(number, withoutSuffix, key) {
         var result = number + ' ';
@@ -44039,8 +44111,6 @@ __webpack_require__.r(__webpack_exports__);
                     result += 'sekundi';
                 }
                 return result;
-            case 'm':
-                return withoutSuffix ? 'jedna minuta' : 'jedne minute';
             case 'mm':
                 if (number === 1) {
                     result += 'minuta';
@@ -44051,7 +44121,7 @@ __webpack_require__.r(__webpack_exports__);
                 }
                 return result;
             case 'h':
-                return withoutSuffix ? 'jedan sat' : 'jednog sata';
+                return withoutSuffix ? 'jedan sat' : 'jedan sat';
             case 'hh':
                 if (number === 1) {
                     result += 'sat';
@@ -44152,7 +44222,7 @@ __webpack_require__.r(__webpack_exports__);
             past: 'prije %s',
             s: 'par sekundi',
             ss: translate,
-            m: translate,
+            m: processRelativeTime,
             mm: translate,
             h: translate,
             hh: translate,
@@ -44273,12 +44343,12 @@ __webpack_require__.r(__webpack_exports__);
                 number === 1
                     ? 'r'
                     : number === 2
-                    ? 'n'
-                    : number === 3
-                    ? 'r'
-                    : number === 4
-                    ? 't'
-                    : 'è';
+                      ? 'n'
+                      : number === 3
+                        ? 'r'
+                        : number === 4
+                          ? 't'
+                          : 'è';
             if (period === 'w' || period === 'W') {
                 output = 'a';
             }
@@ -44315,13 +44385,14 @@ __webpack_require__.r(__webpack_exports__);
     //! moment.js locale configuration
 
     var months = {
-            format: 'leden_únor_březen_duben_květen_červen_červenec_srpen_září_říjen_listopad_prosinec'.split(
-                '_'
-            ),
             standalone:
-                'ledna_února_března_dubna_května_června_července_srpna_září_října_listopadu_prosince'.split(
+                'leden_únor_březen_duben_květen_červen_červenec_srpen_září_říjen_listopad_prosinec'.split(
                     '_'
                 ),
+            format: 'ledna_února_března_dubna_května_června_července_srpna_září_října_listopadu_prosince'.split(
+                '_'
+            ),
+            isFormat: /DD?[o.]?(\[[^\[\]]*\]|\s)+MMMM/,
         },
         monthsShort = 'led_úno_bře_dub_kvě_čvn_čvc_srp_zář_říj_lis_pro'.split('_'),
         monthsParse = [
@@ -44545,8 +44616,8 @@ __webpack_require__.r(__webpack_exports__);
                 var affix = /сехет$/i.exec(output)
                     ? 'рен'
                     : /ҫул$/i.exec(output)
-                    ? 'тан'
-                    : 'ран';
+                      ? 'тан'
+                      : 'ран';
                 return output + affix;
             },
             past: '%s каялла',
@@ -45357,12 +45428,12 @@ __webpack_require__.r(__webpack_exports__);
                     ~~((number % 100) / 10) === 1
                         ? 'th'
                         : b === 1
-                        ? 'st'
-                        : b === 2
-                        ? 'nd'
-                        : b === 3
-                        ? 'rd'
-                        : 'th';
+                          ? 'st'
+                          : b === 2
+                            ? 'nd'
+                            : b === 3
+                              ? 'rd'
+                              : 'th';
             return number + output;
         },
         week: {
@@ -45444,12 +45515,12 @@ __webpack_require__.r(__webpack_exports__);
                     ~~((number % 100) / 10) === 1
                         ? 'th'
                         : b === 1
-                        ? 'st'
-                        : b === 2
-                        ? 'nd'
-                        : b === 3
-                        ? 'rd'
-                        : 'th';
+                          ? 'st'
+                          : b === 2
+                            ? 'nd'
+                            : b === 3
+                              ? 'rd'
+                              : 'th';
             return number + output;
         },
     });
@@ -45527,12 +45598,12 @@ __webpack_require__.r(__webpack_exports__);
                     ~~((number % 100) / 10) === 1
                         ? 'th'
                         : b === 1
-                        ? 'st'
-                        : b === 2
-                        ? 'nd'
-                        : b === 3
-                        ? 'rd'
-                        : 'th';
+                          ? 'st'
+                          : b === 2
+                            ? 'nd'
+                            : b === 3
+                              ? 'rd'
+                              : 'th';
             return number + output;
         },
         week: {
@@ -45614,12 +45685,12 @@ __webpack_require__.r(__webpack_exports__);
                     ~~((number % 100) / 10) === 1
                         ? 'th'
                         : b === 1
-                        ? 'st'
-                        : b === 2
-                        ? 'nd'
-                        : b === 3
-                        ? 'rd'
-                        : 'th';
+                          ? 'st'
+                          : b === 2
+                            ? 'nd'
+                            : b === 3
+                              ? 'rd'
+                              : 'th';
             return number + output;
         },
         week: {
@@ -45701,12 +45772,12 @@ __webpack_require__.r(__webpack_exports__);
                     ~~((number % 100) / 10) === 1
                         ? 'th'
                         : b === 1
-                        ? 'st'
-                        : b === 2
-                        ? 'nd'
-                        : b === 3
-                        ? 'rd'
-                        : 'th';
+                          ? 'st'
+                          : b === 2
+                            ? 'nd'
+                            : b === 3
+                              ? 'rd'
+                              : 'th';
             return number + output;
         },
     });
@@ -45784,12 +45855,12 @@ __webpack_require__.r(__webpack_exports__);
                     ~~((number % 100) / 10) === 1
                         ? 'th'
                         : b === 1
-                        ? 'st'
-                        : b === 2
-                        ? 'nd'
-                        : b === 3
-                        ? 'rd'
-                        : 'th';
+                          ? 'st'
+                          : b === 2
+                            ? 'nd'
+                            : b === 3
+                              ? 'rd'
+                              : 'th';
             return number + output;
         },
         week: {
@@ -45871,12 +45942,12 @@ __webpack_require__.r(__webpack_exports__);
                     ~~((number % 100) / 10) === 1
                         ? 'th'
                         : b === 1
-                        ? 'st'
-                        : b === 2
-                        ? 'nd'
-                        : b === 3
-                        ? 'rd'
-                        : 'th';
+                          ? 'st'
+                          : b === 2
+                            ? 'nd'
+                            : b === 3
+                              ? 'rd'
+                              : 'th';
             return number + output;
         },
         week: {
@@ -45958,12 +46029,12 @@ __webpack_require__.r(__webpack_exports__);
                     ~~((number % 100) / 10) === 1
                         ? 'th'
                         : b === 1
-                        ? 'st'
-                        : b === 2
-                        ? 'nd'
-                        : b === 3
-                        ? 'rd'
-                        : 'th';
+                          ? 'st'
+                          : b === 2
+                            ? 'nd'
+                            : b === 3
+                              ? 'rd'
+                              : 'th';
             return number + output;
         },
         week: {
@@ -49479,8 +49550,8 @@ __webpack_require__.r(__webpack_exports__);
                             (this.hours() > 1
                                 ? 'lle '
                                 : this.hours() === 0
-                                ? ' '
-                                : "ll'") +
+                                  ? ' '
+                                  : "ll'") +
                             ']LT'
                         );
                     default:
@@ -49489,8 +49560,8 @@ __webpack_require__.r(__webpack_exports__);
                             (this.hours() > 1
                                 ? 'lle '
                                 : this.hours() === 0
-                                ? ' '
-                                : "ll'") +
+                                  ? ' '
+                                  : "ll'") +
                             ']LT'
                         );
                 }
@@ -50363,6 +50434,139 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/moment/locale/ku-kmr.js":
+/*!**********************************************!*\
+  !*** ./node_modules/moment/locale/ku-kmr.js ***!
+  \**********************************************/
+/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
+
+//! moment.js locale configuration
+//! locale : Northern Kurdish [ku-kmr]
+//! authors : Mazlum Özdogan : https://github.com/mergehez
+
+;(function (global, factory) {
+    true ? factory(__webpack_require__(/*! ../moment */ "./node_modules/moment/moment.js")) :
+   0
+}(this, (function (moment) { 'use strict';
+
+    //! moment.js locale configuration
+
+    function processRelativeTime(num, withoutSuffix, key, isFuture) {
+        var format = {
+            s: ['çend sanîye', 'çend sanîyeyan'],
+            ss: [num + ' sanîye', num + ' sanîyeyan'],
+            m: ['deqîqeyek', 'deqîqeyekê'],
+            mm: [num + ' deqîqe', num + ' deqîqeyan'],
+            h: ['saetek', 'saetekê'],
+            hh: [num + ' saet', num + ' saetan'],
+            d: ['rojek', 'rojekê'],
+            dd: [num + ' roj', num + ' rojan'],
+            w: ['hefteyek', 'hefteyekê'],
+            ww: [num + ' hefte', num + ' hefteyan'],
+            M: ['mehek', 'mehekê'],
+            MM: [num + ' meh', num + ' mehan'],
+            y: ['salek', 'salekê'],
+            yy: [num + ' sal', num + ' salan'],
+        };
+        return withoutSuffix ? format[key][0] : format[key][1];
+    }
+    // function obliqueNumSuffix(num) {
+    //     if(num.includes(':'))
+    //         num = parseInt(num.split(':')[0]);
+    //     else
+    //         num = parseInt(num);
+    //     return num == 0 || num % 10 == 1 ? 'ê'
+    //                         : (num > 10 && num % 10 == 0 ? 'î' : 'an');
+    // }
+    function ezafeNumSuffix(num) {
+        num = '' + num;
+        var l = num.substring(num.length - 1),
+            ll = num.length > 1 ? num.substring(num.length - 2) : '';
+        if (
+            !(ll == 12 || ll == 13) &&
+            (l == '2' || l == '3' || ll == '50' || l == '70' || l == '80')
+        )
+            return 'yê';
+        return 'ê';
+    }
+
+    var kuKmr = moment.defineLocale('ku-kmr', {
+        // According to the spelling rules defined by the work group of Weqfa Mezopotamyayê (Mesopotamia Foundation)
+        // this should be: 'Kanûna Paşîn_Sibat_Adar_Nîsan_Gulan_Hezîran_Tîrmeh_Tebax_Îlon_Çirîya Pêşîn_Çirîya Paşîn_Kanûna Pêşîn'
+        // But the names below are more well known and handy
+        months: 'Rêbendan_Sibat_Adar_Nîsan_Gulan_Hezîran_Tîrmeh_Tebax_Îlon_Cotmeh_Mijdar_Berfanbar'.split(
+            '_'
+        ),
+        monthsShort: 'Rêb_Sib_Ada_Nîs_Gul_Hez_Tîr_Teb_Îlo_Cot_Mij_Ber'.split('_'),
+        monthsParseExact: true,
+        weekdays: 'Yekşem_Duşem_Sêşem_Çarşem_Pêncşem_În_Şemî'.split('_'),
+        weekdaysShort: 'Yek_Du_Sê_Çar_Pên_În_Şem'.split('_'),
+        weekdaysMin: 'Ye_Du_Sê_Ça_Pê_În_Şe'.split('_'),
+        meridiem: function (hours, minutes, isLower) {
+            if (hours < 12) {
+                return isLower ? 'bn' : 'BN';
+            } else {
+                return isLower ? 'pn' : 'PN';
+            }
+        },
+        meridiemParse: /bn|BN|pn|PN/,
+        longDateFormat: {
+            LT: 'HH:mm',
+            LTS: 'HH:mm:ss',
+            L: 'DD.MM.YYYY',
+            LL: 'Do MMMM[a] YYYY[an]',
+            LLL: 'Do MMMM[a] YYYY[an] HH:mm',
+            LLLL: 'dddd, Do MMMM[a] YYYY[an] HH:mm',
+            ll: 'Do MMM[.] YYYY[an]',
+            lll: 'Do MMM[.] YYYY[an] HH:mm',
+            llll: 'ddd[.], Do MMM[.] YYYY[an] HH:mm',
+        },
+        calendar: {
+            sameDay: '[Îro di saet] LT [de]',
+            nextDay: '[Sibê di saet] LT [de]',
+            nextWeek: 'dddd [di saet] LT [de]',
+            lastDay: '[Duh di saet] LT [de]',
+            lastWeek: 'dddd[a borî di saet] LT [de]',
+            sameElse: 'L',
+        },
+        relativeTime: {
+            future: 'di %s de',
+            past: 'berî %s',
+            s: processRelativeTime,
+            ss: processRelativeTime,
+            m: processRelativeTime,
+            mm: processRelativeTime,
+            h: processRelativeTime,
+            hh: processRelativeTime,
+            d: processRelativeTime,
+            dd: processRelativeTime,
+            w: processRelativeTime,
+            ww: processRelativeTime,
+            M: processRelativeTime,
+            MM: processRelativeTime,
+            y: processRelativeTime,
+            yy: processRelativeTime,
+        },
+        dayOfMonthOrdinalParse: /\d{1,2}(?:yê|ê|\.)/,
+        ordinal: function (num, period) {
+            var p = period.toLowerCase();
+            if (p.includes('w') || p.includes('m')) return num + '.';
+
+            return num + ezafeNumSuffix(num);
+        },
+        week: {
+            dow: 1, // Monday is the first day of the week.
+            doy: 4, // The week that contains Jan 4th is the first week of the year.
+        },
+    });
+
+    return kuKmr;
+
+})));
+
+
+/***/ }),
+
 /***/ "./node_modules/moment/locale/ku.js":
 /*!******************************************!*\
   !*** ./node_modules/moment/locale/ku.js ***!
@@ -50885,8 +51089,8 @@ __webpack_require__.r(__webpack_exports__);
         return withoutSuffix
             ? forms(key)[0]
             : isFuture
-            ? forms(key)[1]
-            : forms(key)[2];
+              ? forms(key)[1]
+              : forms(key)[2];
     }
     function special(number) {
         return number % 10 === 0 || (number > 10 && number < 20);
@@ -51134,8 +51338,8 @@ __webpack_require__.r(__webpack_exports__);
             return number === 1
                 ? wordKey[0]
                 : number >= 2 && number <= 4
-                ? wordKey[1]
-                : wordKey[2];
+                  ? wordKey[1]
+                  : wordKey[2];
         },
         translate: function (number, withoutSuffix, key) {
             var wordKey = translator.words[key];
@@ -52290,13 +52494,13 @@ __webpack_require__.r(__webpack_exports__);
             ss: '%d sekunder',
             m: 'ett minutt',
             mm: '%d minutter',
-            h: 'en time',
+            h: 'én time',
             hh: '%d timer',
-            d: 'en dag',
+            d: 'én dag',
             dd: '%d dager',
-            w: 'en uke',
+            w: 'én uke',
             ww: '%d uker',
-            M: 'en måned',
+            M: 'én måned',
             MM: '%d måneder',
             y: 'ett år',
             yy: '%d år',
@@ -52481,7 +52685,7 @@ __webpack_require__.r(__webpack_exports__);
         monthsParse = [
             /^jan/i,
             /^feb/i,
-            /^maart|mrt.?$/i,
+            /^(maart|mrt\.?)$/i,
             /^apr/i,
             /^mei$/i,
             /^jun[i.]?$/i,
@@ -52602,7 +52806,7 @@ __webpack_require__.r(__webpack_exports__);
         monthsParse = [
             /^jan/i,
             /^feb/i,
-            /^maart|mrt.?$/i,
+            /^(maart|mrt\.?)$/i,
             /^apr/i,
             /^mei$/i,
             /^jun[i.]?$/i,
@@ -52858,12 +53062,12 @@ __webpack_require__.r(__webpack_exports__);
                 number === 1
                     ? 'r'
                     : number === 2
-                    ? 'n'
-                    : number === 3
-                    ? 'r'
-                    : number === 4
-                    ? 't'
-                    : 'è';
+                      ? 'n'
+                      : number === 3
+                        ? 'r'
+                        : number === 4
+                          ? 't'
+                          : 'è';
             if (period === 'w' || period === 'W') {
                 output = 'a';
             }
@@ -53460,8 +53664,8 @@ __webpack_require__.r(__webpack_exports__);
         return num % 10 === 1 && num % 100 !== 11
             ? forms[0]
             : num % 10 >= 2 && num % 10 <= 4 && (num % 100 < 10 || num % 100 >= 20)
-            ? forms[1]
-            : forms[2];
+              ? forms[1]
+              : forms[2];
     }
     function relativeTimeWithPlural(number, withoutSuffix, key) {
         var format = {
@@ -54833,12 +55037,12 @@ __webpack_require__.r(__webpack_exports__);
                     ~~((number % 100) / 10) === 1
                         ? ':e'
                         : b === 1
-                        ? ':a'
-                        : b === 2
-                        ? ':a'
-                        : b === 3
-                        ? ':e'
-                        : ':e';
+                          ? ':a'
+                          : b === 2
+                            ? ':a'
+                            : b === 3
+                              ? ':e'
+                              : ':e';
             return number + output;
         },
         week: {
@@ -55251,12 +55455,12 @@ __webpack_require__.r(__webpack_exports__);
                     ~~((number % 100) / 10) === 1
                         ? 'th'
                         : b === 1
-                        ? 'st'
-                        : b === 2
-                        ? 'nd'
-                        : b === 3
-                        ? 'rd'
-                        : 'th';
+                          ? 'st'
+                          : b === 2
+                            ? 'nd'
+                            : b === 3
+                              ? 'rd'
+                              : 'th';
             return number + output;
         },
         week: {
@@ -55703,10 +55907,10 @@ __webpack_require__.r(__webpack_exports__);
             output.indexOf('jaj') !== -1
                 ? time.slice(0, -3) + 'leS'
                 : output.indexOf('jar') !== -1
-                ? time.slice(0, -3) + 'waQ'
-                : output.indexOf('DIS') !== -1
-                ? time.slice(0, -3) + 'nem'
-                : time + ' pIq';
+                  ? time.slice(0, -3) + 'waQ'
+                  : output.indexOf('DIS') !== -1
+                    ? time.slice(0, -3) + 'nem'
+                    : time + ' pIq';
         return time;
     }
 
@@ -55716,10 +55920,10 @@ __webpack_require__.r(__webpack_exports__);
             output.indexOf('jaj') !== -1
                 ? time.slice(0, -3) + 'Hu’'
                 : output.indexOf('jar') !== -1
-                ? time.slice(0, -3) + 'wen'
-                : output.indexOf('DIS') !== -1
-                ? time.slice(0, -3) + 'ben'
-                : time + ' ret';
+                  ? time.slice(0, -3) + 'wen'
+                  : output.indexOf('DIS') !== -1
+                    ? time.slice(0, -3) + 'ben'
+                    : time + ' ret';
         return time;
     }
 
@@ -56043,8 +56247,8 @@ __webpack_require__.r(__webpack_exports__);
         return isFuture
             ? format[key][0]
             : withoutSuffix
-            ? format[key][0]
-            : format[key][1];
+              ? format[key][0]
+              : format[key][1];
     }
 
     return tzl;
@@ -56353,8 +56557,8 @@ __webpack_require__.r(__webpack_exports__);
         return num % 10 === 1 && num % 100 !== 11
             ? forms[0]
             : num % 10 >= 2 && num % 10 <= 4 && (num % 100 < 10 || num % 100 >= 20)
-            ? forms[1]
-            : forms[2];
+              ? forms[1]
+              : forms[2];
     }
     function relativeTimeWithPlural(number, withoutSuffix, key) {
         var format = {
@@ -56402,8 +56606,8 @@ __webpack_require__.r(__webpack_exports__);
         nounCase = /(\[[ВвУу]\]) ?dddd/.test(format)
             ? 'accusative'
             : /\[?(?:минулої|наступної)? ?\] ?dddd/.test(format)
-            ? 'genitive'
-            : 'nominative';
+              ? 'genitive'
+              : 'nominative';
         return weekdays[nounCase][m.day()];
     }
     function processHoursFunction(str) {
@@ -56930,12 +57134,12 @@ __webpack_require__.r(__webpack_exports__);
                     ~~((number % 100) / 10) === 1
                         ? 'th'
                         : b === 1
-                        ? 'st'
-                        : b === 2
-                        ? 'nd'
-                        : b === 3
-                        ? 'rd'
-                        : 'th';
+                          ? 'st'
+                          : b === 2
+                            ? 'nd'
+                            : b === 3
+                              ? 'rd'
+                              : 'th';
             return number + output;
         },
         week: {
@@ -57537,6 +57741,8 @@ var map = {
 	"./ar-ly.js": "./node_modules/moment/locale/ar-ly.js",
 	"./ar-ma": "./node_modules/moment/locale/ar-ma.js",
 	"./ar-ma.js": "./node_modules/moment/locale/ar-ma.js",
+	"./ar-ps": "./node_modules/moment/locale/ar-ps.js",
+	"./ar-ps.js": "./node_modules/moment/locale/ar-ps.js",
 	"./ar-sa": "./node_modules/moment/locale/ar-sa.js",
 	"./ar-sa.js": "./node_modules/moment/locale/ar-sa.js",
 	"./ar-tn": "./node_modules/moment/locale/ar-tn.js",
@@ -57671,6 +57877,8 @@ var map = {
 	"./ko": "./node_modules/moment/locale/ko.js",
 	"./ko.js": "./node_modules/moment/locale/ko.js",
 	"./ku": "./node_modules/moment/locale/ku.js",
+	"./ku-kmr": "./node_modules/moment/locale/ku-kmr.js",
+	"./ku-kmr.js": "./node_modules/moment/locale/ku-kmr.js",
 	"./ku.js": "./node_modules/moment/locale/ku.js",
 	"./ky": "./node_modules/moment/locale/ky.js",
 	"./ky.js": "./node_modules/moment/locale/ky.js",
@@ -57828,7 +58036,7 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
 /* module decorator */ module = __webpack_require__.nmd(module);
 //! moment.js
-//! version : 2.29.4
+//! version : 2.30.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
@@ -57983,24 +58191,25 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
     }
 
     function isValid(m) {
-        if (m._isValid == null) {
-            var flags = getParsingFlags(m),
-                parsedParts = some.call(flags.parsedDateParts, function (i) {
-                    return i != null;
-                }),
-                isNowValid =
-                    !isNaN(m._d.getTime()) &&
-                    flags.overflow < 0 &&
-                    !flags.empty &&
-                    !flags.invalidEra &&
-                    !flags.invalidMonth &&
-                    !flags.invalidWeekday &&
-                    !flags.weekdayMismatch &&
-                    !flags.nullInput &&
-                    !flags.invalidFormat &&
-                    !flags.userInvalidated &&
-                    (!flags.meridiem || (flags.meridiem && parsedParts));
-
+        var flags = null,
+            parsedParts = false,
+            isNowValid = m._d && !isNaN(m._d.getTime());
+        if (isNowValid) {
+            flags = getParsingFlags(m);
+            parsedParts = some.call(flags.parsedDateParts, function (i) {
+                return i != null;
+            });
+            isNowValid =
+                flags.overflow < 0 &&
+                !flags.empty &&
+                !flags.invalidEra &&
+                !flags.invalidMonth &&
+                !flags.invalidWeekday &&
+                !flags.weekdayMismatch &&
+                !flags.nullInput &&
+                !flags.invalidFormat &&
+                !flags.userInvalidated &&
+                (!flags.meridiem || (flags.meridiem && parsedParts));
             if (m._strict) {
                 isNowValid =
                     isNowValid &&
@@ -58008,12 +58217,11 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
                     flags.unusedTokens.length === 0 &&
                     flags.bigHour === undefined;
             }
-
-            if (Object.isFrozen == null || !Object.isFrozen(m)) {
-                m._isValid = isNowValid;
-            } else {
-                return isNowValid;
-            }
+        }
+        if (Object.isFrozen == null || !Object.isFrozen(m)) {
+            m._isValid = isNowValid;
+        } else {
+            return isNowValid;
         }
         return m._isValid;
     }
@@ -58458,12 +58666,56 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
         return isFunction(format) ? format(output) : format.replace(/%s/i, output);
     }
 
-    var aliases = {};
-
-    function addUnitAlias(unit, shorthand) {
-        var lowerCase = unit.toLowerCase();
-        aliases[lowerCase] = aliases[lowerCase + 's'] = aliases[shorthand] = unit;
-    }
+    var aliases = {
+        D: 'date',
+        dates: 'date',
+        date: 'date',
+        d: 'day',
+        days: 'day',
+        day: 'day',
+        e: 'weekday',
+        weekdays: 'weekday',
+        weekday: 'weekday',
+        E: 'isoWeekday',
+        isoweekdays: 'isoWeekday',
+        isoweekday: 'isoWeekday',
+        DDD: 'dayOfYear',
+        dayofyears: 'dayOfYear',
+        dayofyear: 'dayOfYear',
+        h: 'hour',
+        hours: 'hour',
+        hour: 'hour',
+        ms: 'millisecond',
+        milliseconds: 'millisecond',
+        millisecond: 'millisecond',
+        m: 'minute',
+        minutes: 'minute',
+        minute: 'minute',
+        M: 'month',
+        months: 'month',
+        month: 'month',
+        Q: 'quarter',
+        quarters: 'quarter',
+        quarter: 'quarter',
+        s: 'second',
+        seconds: 'second',
+        second: 'second',
+        gg: 'weekYear',
+        weekyears: 'weekYear',
+        weekyear: 'weekYear',
+        GG: 'isoWeekYear',
+        isoweekyears: 'isoWeekYear',
+        isoweekyear: 'isoWeekYear',
+        w: 'week',
+        weeks: 'week',
+        week: 'week',
+        W: 'isoWeek',
+        isoweeks: 'isoWeek',
+        isoweek: 'isoWeek',
+        y: 'year',
+        years: 'year',
+        year: 'year',
+    };
 
     function normalizeUnits(units) {
         return typeof units === 'string'
@@ -58488,11 +58740,24 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
         return normalizedInput;
     }
 
-    var priorities = {};
-
-    function addUnitPriority(unit, priority) {
-        priorities[unit] = priority;
-    }
+    var priorities = {
+        date: 9,
+        day: 11,
+        weekday: 11,
+        isoWeekday: 11,
+        dayOfYear: 4,
+        hour: 13,
+        millisecond: 16,
+        minute: 14,
+        month: 8,
+        quarter: 7,
+        second: 15,
+        weekYear: 1,
+        isoWeekYear: 1,
+        week: 5,
+        isoWeek: 5,
+        year: 1,
+    };
 
     function getPrioritizedUnits(unitsObj) {
         var units = [],
@@ -58506,96 +58771,6 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
             return a.priority - b.priority;
         });
         return units;
-    }
-
-    function isLeapYear(year) {
-        return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-    }
-
-    function absFloor(number) {
-        if (number < 0) {
-            // -0 -> 0
-            return Math.ceil(number) || 0;
-        } else {
-            return Math.floor(number);
-        }
-    }
-
-    function toInt(argumentForCoercion) {
-        var coercedNumber = +argumentForCoercion,
-            value = 0;
-
-        if (coercedNumber !== 0 && isFinite(coercedNumber)) {
-            value = absFloor(coercedNumber);
-        }
-
-        return value;
-    }
-
-    function makeGetSet(unit, keepTime) {
-        return function (value) {
-            if (value != null) {
-                set$1(this, unit, value);
-                hooks.updateOffset(this, keepTime);
-                return this;
-            } else {
-                return get(this, unit);
-            }
-        };
-    }
-
-    function get(mom, unit) {
-        return mom.isValid()
-            ? mom._d['get' + (mom._isUTC ? 'UTC' : '') + unit]()
-            : NaN;
-    }
-
-    function set$1(mom, unit, value) {
-        if (mom.isValid() && !isNaN(value)) {
-            if (
-                unit === 'FullYear' &&
-                isLeapYear(mom.year()) &&
-                mom.month() === 1 &&
-                mom.date() === 29
-            ) {
-                value = toInt(value);
-                mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](
-                    value,
-                    mom.month(),
-                    daysInMonth(value, mom.month())
-                );
-            } else {
-                mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value);
-            }
-        }
-    }
-
-    // MOMENTS
-
-    function stringGet(units) {
-        units = normalizeUnits(units);
-        if (isFunction(this[units])) {
-            return this[units]();
-        }
-        return this;
-    }
-
-    function stringSet(units, value) {
-        if (typeof units === 'object') {
-            units = normalizeObjectUnits(units);
-            var prioritized = getPrioritizedUnits(units),
-                i,
-                prioritizedLen = prioritized.length;
-            for (i = 0; i < prioritizedLen; i++) {
-                this[prioritized[i].unit](units[prioritized[i].unit]);
-            }
-        } else {
-            units = normalizeUnits(units);
-            if (isFunction(this[units])) {
-                return this[units](value);
-            }
-        }
-        return this;
     }
 
     var match1 = /\d/, //       0 - 9
@@ -58618,6 +58793,8 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
         // includes scottish gaelic two word and hyphenated months
         matchWord =
             /[0-9]{0,256}['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFF07\uFF10-\uFFEF]{1,256}|[\u0600-\u06FF\/]{1,256}(\s*?[\u0600-\u06FF]{1,256}){1,2}/i,
+        match1to2NoLeadingZero = /^[1-9]\d?/, //         1-99
+        match1to2HasZero = /^([1-9]\d|\d)/, //           0-99
         regexes;
 
     regexes = {};
@@ -58656,6 +58833,26 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
         return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
     }
 
+    function absFloor(number) {
+        if (number < 0) {
+            // -0 -> 0
+            return Math.ceil(number) || 0;
+        } else {
+            return Math.floor(number);
+        }
+    }
+
+    function toInt(argumentForCoercion) {
+        var coercedNumber = +argumentForCoercion,
+            value = 0;
+
+        if (coercedNumber !== 0 && isFinite(coercedNumber)) {
+            value = absFloor(coercedNumber);
+        }
+
+        return value;
+    }
+
     var tokens = {};
 
     function addParseToken(token, callback) {
@@ -58689,6 +58886,10 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
         }
     }
 
+    function isLeapYear(year) {
+        return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+    }
+
     var YEAR = 0,
         MONTH = 1,
         DATE = 2,
@@ -58698,6 +58899,173 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
         MILLISECOND = 6,
         WEEK = 7,
         WEEKDAY = 8;
+
+    // FORMATTING
+
+    addFormatToken('Y', 0, 0, function () {
+        var y = this.year();
+        return y <= 9999 ? zeroFill(y, 4) : '+' + y;
+    });
+
+    addFormatToken(0, ['YY', 2], 0, function () {
+        return this.year() % 100;
+    });
+
+    addFormatToken(0, ['YYYY', 4], 0, 'year');
+    addFormatToken(0, ['YYYYY', 5], 0, 'year');
+    addFormatToken(0, ['YYYYYY', 6, true], 0, 'year');
+
+    // PARSING
+
+    addRegexToken('Y', matchSigned);
+    addRegexToken('YY', match1to2, match2);
+    addRegexToken('YYYY', match1to4, match4);
+    addRegexToken('YYYYY', match1to6, match6);
+    addRegexToken('YYYYYY', match1to6, match6);
+
+    addParseToken(['YYYYY', 'YYYYYY'], YEAR);
+    addParseToken('YYYY', function (input, array) {
+        array[YEAR] =
+            input.length === 2 ? hooks.parseTwoDigitYear(input) : toInt(input);
+    });
+    addParseToken('YY', function (input, array) {
+        array[YEAR] = hooks.parseTwoDigitYear(input);
+    });
+    addParseToken('Y', function (input, array) {
+        array[YEAR] = parseInt(input, 10);
+    });
+
+    // HELPERS
+
+    function daysInYear(year) {
+        return isLeapYear(year) ? 366 : 365;
+    }
+
+    // HOOKS
+
+    hooks.parseTwoDigitYear = function (input) {
+        return toInt(input) + (toInt(input) > 68 ? 1900 : 2000);
+    };
+
+    // MOMENTS
+
+    var getSetYear = makeGetSet('FullYear', true);
+
+    function getIsLeapYear() {
+        return isLeapYear(this.year());
+    }
+
+    function makeGetSet(unit, keepTime) {
+        return function (value) {
+            if (value != null) {
+                set$1(this, unit, value);
+                hooks.updateOffset(this, keepTime);
+                return this;
+            } else {
+                return get(this, unit);
+            }
+        };
+    }
+
+    function get(mom, unit) {
+        if (!mom.isValid()) {
+            return NaN;
+        }
+
+        var d = mom._d,
+            isUTC = mom._isUTC;
+
+        switch (unit) {
+            case 'Milliseconds':
+                return isUTC ? d.getUTCMilliseconds() : d.getMilliseconds();
+            case 'Seconds':
+                return isUTC ? d.getUTCSeconds() : d.getSeconds();
+            case 'Minutes':
+                return isUTC ? d.getUTCMinutes() : d.getMinutes();
+            case 'Hours':
+                return isUTC ? d.getUTCHours() : d.getHours();
+            case 'Date':
+                return isUTC ? d.getUTCDate() : d.getDate();
+            case 'Day':
+                return isUTC ? d.getUTCDay() : d.getDay();
+            case 'Month':
+                return isUTC ? d.getUTCMonth() : d.getMonth();
+            case 'FullYear':
+                return isUTC ? d.getUTCFullYear() : d.getFullYear();
+            default:
+                return NaN; // Just in case
+        }
+    }
+
+    function set$1(mom, unit, value) {
+        var d, isUTC, year, month, date;
+
+        if (!mom.isValid() || isNaN(value)) {
+            return;
+        }
+
+        d = mom._d;
+        isUTC = mom._isUTC;
+
+        switch (unit) {
+            case 'Milliseconds':
+                return void (isUTC
+                    ? d.setUTCMilliseconds(value)
+                    : d.setMilliseconds(value));
+            case 'Seconds':
+                return void (isUTC ? d.setUTCSeconds(value) : d.setSeconds(value));
+            case 'Minutes':
+                return void (isUTC ? d.setUTCMinutes(value) : d.setMinutes(value));
+            case 'Hours':
+                return void (isUTC ? d.setUTCHours(value) : d.setHours(value));
+            case 'Date':
+                return void (isUTC ? d.setUTCDate(value) : d.setDate(value));
+            // case 'Day': // Not real
+            //    return void (isUTC ? d.setUTCDay(value) : d.setDay(value));
+            // case 'Month': // Not used because we need to pass two variables
+            //     return void (isUTC ? d.setUTCMonth(value) : d.setMonth(value));
+            case 'FullYear':
+                break; // See below ...
+            default:
+                return; // Just in case
+        }
+
+        year = value;
+        month = mom.month();
+        date = mom.date();
+        date = date === 29 && month === 1 && !isLeapYear(year) ? 28 : date;
+        void (isUTC
+            ? d.setUTCFullYear(year, month, date)
+            : d.setFullYear(year, month, date));
+    }
+
+    // MOMENTS
+
+    function stringGet(units) {
+        units = normalizeUnits(units);
+        if (isFunction(this[units])) {
+            return this[units]();
+        }
+        return this;
+    }
+
+    function stringSet(units, value) {
+        if (typeof units === 'object') {
+            units = normalizeObjectUnits(units);
+            var prioritized = getPrioritizedUnits(units),
+                i,
+                prioritizedLen = prioritized.length;
+            for (i = 0; i < prioritizedLen; i++) {
+                this[prioritized[i].unit](units[prioritized[i].unit]);
+            }
+        } else {
+            units = normalizeUnits(units);
+            if (isFunction(this[units])) {
+                return this[units](value);
+            }
+        }
+        return this;
+    }
 
     function mod(n, x) {
         return ((n % x) + x) % x;
@@ -58747,17 +59115,9 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
         return this.localeData().months(this, format);
     });
 
-    // ALIASES
-
-    addUnitAlias('month', 'M');
-
-    // PRIORITY
-
-    addUnitPriority('month', 8);
-
     // PARSING
 
-    addRegexToken('M', match1to2);
+    addRegexToken('M', match1to2, match1to2NoLeadingZero);
     addRegexToken('MM', match1to2, match2);
     addRegexToken('MMM', function (isStrict, locale) {
         return locale.monthsShortRegex(isStrict);
@@ -58923,8 +59283,6 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
     // MOMENTS
 
     function setMonth(mom, value) {
-        var dayOfMonth;
-
         if (!mom.isValid()) {
             // No op
             return mom;
@@ -58942,8 +59300,13 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
             }
         }
 
-        dayOfMonth = Math.min(mom.date(), daysInMonth(mom.year(), value));
-        mom._d['set' + (mom._isUTC ? 'UTC' : '') + 'Month'](value, dayOfMonth);
+        var month = value,
+            date = mom.date();
+
+        date = date < 29 ? date : Math.min(date, daysInMonth(mom.year(), month));
+        void (mom._isUTC
+            ? mom._d.setUTCMonth(month, date)
+            : mom._d.setMonth(month, date));
         return mom;
     }
 
@@ -59010,27 +59373,24 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
             longPieces = [],
             mixedPieces = [],
             i,
-            mom;
+            mom,
+            shortP,
+            longP;
         for (i = 0; i < 12; i++) {
             // make the regex if we don't have it already
             mom = createUTC([2000, i]);
-            shortPieces.push(this.monthsShort(mom, ''));
-            longPieces.push(this.months(mom, ''));
-            mixedPieces.push(this.months(mom, ''));
-            mixedPieces.push(this.monthsShort(mom, ''));
+            shortP = regexEscape(this.monthsShort(mom, ''));
+            longP = regexEscape(this.months(mom, ''));
+            shortPieces.push(shortP);
+            longPieces.push(longP);
+            mixedPieces.push(longP);
+            mixedPieces.push(shortP);
         }
         // Sorting makes sure if one month (or abbr) is a prefix of another it
         // will match the longer piece.
         shortPieces.sort(cmpLenRev);
         longPieces.sort(cmpLenRev);
         mixedPieces.sort(cmpLenRev);
-        for (i = 0; i < 12; i++) {
-            shortPieces[i] = regexEscape(shortPieces[i]);
-            longPieces[i] = regexEscape(longPieces[i]);
-        }
-        for (i = 0; i < 24; i++) {
-            mixedPieces[i] = regexEscape(mixedPieces[i]);
-        }
 
         this._monthsRegex = new RegExp('^(' + mixedPieces.join('|') + ')', 'i');
         this._monthsShortRegex = this._monthsRegex;
@@ -59042,69 +59402,6 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
             '^(' + shortPieces.join('|') + ')',
             'i'
         );
-    }
-
-    // FORMATTING
-
-    addFormatToken('Y', 0, 0, function () {
-        var y = this.year();
-        return y <= 9999 ? zeroFill(y, 4) : '+' + y;
-    });
-
-    addFormatToken(0, ['YY', 2], 0, function () {
-        return this.year() % 100;
-    });
-
-    addFormatToken(0, ['YYYY', 4], 0, 'year');
-    addFormatToken(0, ['YYYYY', 5], 0, 'year');
-    addFormatToken(0, ['YYYYYY', 6, true], 0, 'year');
-
-    // ALIASES
-
-    addUnitAlias('year', 'y');
-
-    // PRIORITIES
-
-    addUnitPriority('year', 1);
-
-    // PARSING
-
-    addRegexToken('Y', matchSigned);
-    addRegexToken('YY', match1to2, match2);
-    addRegexToken('YYYY', match1to4, match4);
-    addRegexToken('YYYYY', match1to6, match6);
-    addRegexToken('YYYYYY', match1to6, match6);
-
-    addParseToken(['YYYYY', 'YYYYYY'], YEAR);
-    addParseToken('YYYY', function (input, array) {
-        array[YEAR] =
-            input.length === 2 ? hooks.parseTwoDigitYear(input) : toInt(input);
-    });
-    addParseToken('YY', function (input, array) {
-        array[YEAR] = hooks.parseTwoDigitYear(input);
-    });
-    addParseToken('Y', function (input, array) {
-        array[YEAR] = parseInt(input, 10);
-    });
-
-    // HELPERS
-
-    function daysInYear(year) {
-        return isLeapYear(year) ? 366 : 365;
-    }
-
-    // HOOKS
-
-    hooks.parseTwoDigitYear = function (input) {
-        return toInt(input) + (toInt(input) > 68 ? 1900 : 2000);
-    };
-
-    // MOMENTS
-
-    var getSetYear = makeGetSet('FullYear', true);
-
-    function getIsLeapYear() {
-        return isLeapYear(this.year());
     }
 
     function createDate(y, m, d, h, M, s, ms) {
@@ -59212,21 +59509,11 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
     addFormatToken('w', ['ww', 2], 'wo', 'week');
     addFormatToken('W', ['WW', 2], 'Wo', 'isoWeek');
 
-    // ALIASES
-
-    addUnitAlias('week', 'w');
-    addUnitAlias('isoWeek', 'W');
-
-    // PRIORITIES
-
-    addUnitPriority('week', 5);
-    addUnitPriority('isoWeek', 5);
-
     // PARSING
 
-    addRegexToken('w', match1to2);
+    addRegexToken('w', match1to2, match1to2NoLeadingZero);
     addRegexToken('ww', match1to2, match2);
-    addRegexToken('W', match1to2);
+    addRegexToken('W', match1to2, match1to2NoLeadingZero);
     addRegexToken('WW', match1to2, match2);
 
     addWeekParseToken(
@@ -59287,17 +59574,6 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
     addFormatToken('e', 0, 0, 'weekday');
     addFormatToken('E', 0, 0, 'isoWeekday');
-
-    // ALIASES
-
-    addUnitAlias('day', 'd');
-    addUnitAlias('weekday', 'e');
-    addUnitAlias('isoWeekday', 'E');
-
-    // PRIORITY
-    addUnitPriority('day', 11);
-    addUnitPriority('weekday', 11);
-    addUnitPriority('isoWeekday', 11);
 
     // PARSING
 
@@ -59378,24 +59654,24 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
         return m === true
             ? shiftWeekdays(weekdays, this._week.dow)
             : m
-            ? weekdays[m.day()]
-            : weekdays;
+              ? weekdays[m.day()]
+              : weekdays;
     }
 
     function localeWeekdaysShort(m) {
         return m === true
             ? shiftWeekdays(this._weekdaysShort, this._week.dow)
             : m
-            ? this._weekdaysShort[m.day()]
-            : this._weekdaysShort;
+              ? this._weekdaysShort[m.day()]
+              : this._weekdaysShort;
     }
 
     function localeWeekdaysMin(m) {
         return m === true
             ? shiftWeekdays(this._weekdaysMin, this._week.dow)
             : m
-            ? this._weekdaysMin[m.day()]
-            : this._weekdaysMin;
+              ? this._weekdaysMin[m.day()]
+              : this._weekdaysMin;
     }
 
     function handleStrictParse$1(weekdayName, format, strict) {
@@ -59544,7 +59820,8 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
         if (!this.isValid()) {
             return input != null ? this : NaN;
         }
-        var day = this._isUTC ? this._d.getUTCDay() : this._d.getDay();
+
+        var day = get(this, 'Day');
         if (input != null) {
             input = parseWeekday(input, this.localeData());
             return this.add(input - day, 'd');
@@ -59743,13 +60020,6 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
     meridiem('a', true);
     meridiem('A', false);
 
-    // ALIASES
-
-    addUnitAlias('hour', 'h');
-
-    // PRIORITY
-    addUnitPriority('hour', 13);
-
     // PARSING
 
     function matchMeridiem(isStrict, locale) {
@@ -59758,9 +60028,9 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
     addRegexToken('a', matchMeridiem);
     addRegexToken('A', matchMeridiem);
-    addRegexToken('H', match1to2);
-    addRegexToken('h', match1to2);
-    addRegexToken('k', match1to2);
+    addRegexToken('H', match1to2, match1to2HasZero);
+    addRegexToken('h', match1to2, match1to2NoLeadingZero);
+    addRegexToken('k', match1to2, match1to2NoLeadingZero);
     addRegexToken('HH', match1to2, match2);
     addRegexToken('hh', match1to2, match2);
     addRegexToken('kk', match1to2, match2);
@@ -59910,7 +60180,8 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
     function isLocaleNameSane(name) {
         // Prevent names that look like filesystem paths, i.e contain '/' or '\'
-        return name.match('^[^/\\\\]*$') != null;
+        // Ensure name is available and function returns boolean
+        return !!(name && name.match('^[^/\\\\]*$'));
     }
 
     function loadLocale(name) {
@@ -60102,21 +60373,21 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
                 a[MONTH] < 0 || a[MONTH] > 11
                     ? MONTH
                     : a[DATE] < 1 || a[DATE] > daysInMonth(a[YEAR], a[MONTH])
-                    ? DATE
-                    : a[HOUR] < 0 ||
-                      a[HOUR] > 24 ||
-                      (a[HOUR] === 24 &&
-                          (a[MINUTE] !== 0 ||
-                              a[SECOND] !== 0 ||
-                              a[MILLISECOND] !== 0))
-                    ? HOUR
-                    : a[MINUTE] < 0 || a[MINUTE] > 59
-                    ? MINUTE
-                    : a[SECOND] < 0 || a[SECOND] > 59
-                    ? SECOND
-                    : a[MILLISECOND] < 0 || a[MILLISECOND] > 999
-                    ? MILLISECOND
-                    : -1;
+                      ? DATE
+                      : a[HOUR] < 0 ||
+                          a[HOUR] > 24 ||
+                          (a[HOUR] === 24 &&
+                              (a[MINUTE] !== 0 ||
+                                  a[SECOND] !== 0 ||
+                                  a[MILLISECOND] !== 0))
+                        ? HOUR
+                        : a[MINUTE] < 0 || a[MINUTE] > 59
+                          ? MINUTE
+                          : a[SECOND] < 0 || a[SECOND] > 59
+                            ? SECOND
+                            : a[MILLISECOND] < 0 || a[MILLISECOND] > 999
+                              ? MILLISECOND
+                              : -1;
 
             if (
                 getParsingFlags(m)._overflowDayOfYear &&
@@ -61557,16 +61828,16 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
         return diff < -6
             ? 'sameElse'
             : diff < -1
-            ? 'lastWeek'
-            : diff < 0
-            ? 'lastDay'
-            : diff < 1
-            ? 'sameDay'
-            : diff < 2
-            ? 'nextDay'
-            : diff < 7
-            ? 'nextWeek'
-            : 'sameElse';
+              ? 'lastWeek'
+              : diff < 0
+                ? 'lastDay'
+                : diff < 1
+                  ? 'sameDay'
+                  : diff < 2
+                    ? 'nextDay'
+                    : diff < 7
+                      ? 'nextWeek'
+                      : 'sameElse';
     }
 
     function calendar$1(time, formats) {
@@ -62374,16 +62645,22 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
             mixedPieces = [],
             i,
             l,
+            erasName,
+            erasAbbr,
+            erasNarrow,
             eras = this.eras();
 
         for (i = 0, l = eras.length; i < l; ++i) {
-            namePieces.push(regexEscape(eras[i].name));
-            abbrPieces.push(regexEscape(eras[i].abbr));
-            narrowPieces.push(regexEscape(eras[i].narrow));
+            erasName = regexEscape(eras[i].name);
+            erasAbbr = regexEscape(eras[i].abbr);
+            erasNarrow = regexEscape(eras[i].narrow);
 
-            mixedPieces.push(regexEscape(eras[i].name));
-            mixedPieces.push(regexEscape(eras[i].abbr));
-            mixedPieces.push(regexEscape(eras[i].narrow));
+            namePieces.push(erasName);
+            abbrPieces.push(erasAbbr);
+            narrowPieces.push(erasNarrow);
+            mixedPieces.push(erasName);
+            mixedPieces.push(erasAbbr);
+            mixedPieces.push(erasNarrow);
         }
 
         this._erasRegex = new RegExp('^(' + mixedPieces.join('|') + ')', 'i');
@@ -62416,14 +62693,6 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
     // ALIASES
 
-    addUnitAlias('weekYear', 'gg');
-    addUnitAlias('isoWeekYear', 'GG');
-
-    // PRIORITY
-
-    addUnitPriority('weekYear', 1);
-    addUnitPriority('isoWeekYear', 1);
-
     // PARSING
 
     addRegexToken('G', matchSigned);
@@ -62453,7 +62722,7 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
             this,
             input,
             this.week(),
-            this.weekday(),
+            this.weekday() + this.localeData()._week.dow,
             this.localeData()._week.dow,
             this.localeData()._week.doy
         );
@@ -62515,14 +62784,6 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
     addFormatToken('Q', 0, 'Qo', 'quarter');
 
-    // ALIASES
-
-    addUnitAlias('quarter', 'Q');
-
-    // PRIORITY
-
-    addUnitPriority('quarter', 7);
-
     // PARSING
 
     addRegexToken('Q', match1);
@@ -62542,16 +62803,9 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
     addFormatToken('D', ['DD', 2], 'Do', 'date');
 
-    // ALIASES
-
-    addUnitAlias('date', 'D');
-
-    // PRIORITY
-    addUnitPriority('date', 9);
-
     // PARSING
 
-    addRegexToken('D', match1to2);
+    addRegexToken('D', match1to2, match1to2NoLeadingZero);
     addRegexToken('DD', match1to2, match2);
     addRegexToken('Do', function (isStrict, locale) {
         // TODO: Remove "ordinalParse" fallback in next major release.
@@ -62572,13 +62826,6 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
     // FORMATTING
 
     addFormatToken('DDD', ['DDDD', 3], 'DDDo', 'dayOfYear');
-
-    // ALIASES
-
-    addUnitAlias('dayOfYear', 'DDD');
-
-    // PRIORITY
-    addUnitPriority('dayOfYear', 4);
 
     // PARSING
 
@@ -62604,17 +62851,9 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
     addFormatToken('m', ['mm', 2], 0, 'minute');
 
-    // ALIASES
-
-    addUnitAlias('minute', 'm');
-
-    // PRIORITY
-
-    addUnitPriority('minute', 14);
-
     // PARSING
 
-    addRegexToken('m', match1to2);
+    addRegexToken('m', match1to2, match1to2HasZero);
     addRegexToken('mm', match1to2, match2);
     addParseToken(['m', 'mm'], MINUTE);
 
@@ -62626,17 +62865,9 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
     addFormatToken('s', ['ss', 2], 0, 'second');
 
-    // ALIASES
-
-    addUnitAlias('second', 's');
-
-    // PRIORITY
-
-    addUnitPriority('second', 15);
-
     // PARSING
 
-    addRegexToken('s', match1to2);
+    addRegexToken('s', match1to2, match1to2HasZero);
     addRegexToken('ss', match1to2, match2);
     addParseToken(['s', 'ss'], SECOND);
 
@@ -62673,14 +62904,6 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
     addFormatToken(0, ['SSSSSSSSS', 9], 0, function () {
         return this.millisecond() * 1000000;
     });
-
-    // ALIASES
-
-    addUnitAlias('millisecond', 'ms');
-
-    // PRIORITY
-
-    addUnitPriority('millisecond', 16);
 
     // PARSING
 
@@ -62989,12 +63212,12 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
                     toInt((number % 100) / 10) === 1
                         ? 'th'
                         : b === 1
-                        ? 'st'
-                        : b === 2
-                        ? 'nd'
-                        : b === 3
-                        ? 'rd'
-                        : 'th';
+                          ? 'st'
+                          : b === 2
+                            ? 'nd'
+                            : b === 3
+                              ? 'rd'
+                              : 'th';
             return number + output;
         },
     });
@@ -63167,19 +63390,6 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
         }
     }
 
-    // TODO: Use this.as('ms')?
-    function valueOf$1() {
-        if (!this.isValid()) {
-            return NaN;
-        }
-        return (
-            this._milliseconds +
-            this._days * 864e5 +
-            (this._months % 12) * 2592e6 +
-            toInt(this._months / 12) * 31536e6
-        );
-    }
-
     function makeAs(alias) {
         return function () {
             return this.as(alias);
@@ -63194,7 +63404,8 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
         asWeeks = makeAs('w'),
         asMonths = makeAs('M'),
         asQuarters = makeAs('Q'),
-        asYears = makeAs('y');
+        asYears = makeAs('y'),
+        valueOf$1 = asMilliseconds;
 
     function clone$1() {
         return createDuration(this);
@@ -63463,7 +63674,7 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
     //! moment.js
 
-    hooks.version = '2.29.4';
+    hooks.version = '2.30.1';
 
     setHookCallback(createLocal);
 
@@ -81674,17 +81885,6 @@ module.exports = window["React"];
 
 "use strict";
 module.exports = window["ReactDOM"];
-
-/***/ }),
-
-/***/ "moment":
-/*!*************************!*\
-  !*** external "moment" ***!
-  \*************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = window["moment"];
 
 /***/ }),
 

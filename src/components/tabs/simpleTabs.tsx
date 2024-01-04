@@ -51,7 +51,7 @@ const SimpleTabs: FC<SimpleTabProps> = (props) => {
                     ))}
                 </Tabs>
             </Box>
-            <Box className="h-full w-full p-5">
+            <Box className="h-full w-full">
                 {props.tabs[props.activePanel].renderedComponent}
             </Box>
         </>

@@ -2,22 +2,22 @@ import React from 'react';
 import moment from 'moment';
 import 'moment/locale/nb';
 
+const monthNames = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
+];
+
 interface DateCellProps {
-    params: string;
+  params: string;
 }
 
 const DateCell: React.FC<DateCellProps> = (props) => {
-    const plainDate = props.params;
-    const language = localStorage.getItem('i18nextLng');
+  const plainDate = props.params;
+  const parsedDate = new Date(plainDate);
 
-    let formattedDate = moment(plainDate).format('LL');
+  const formattedDate = `${monthNames[parsedDate.getMonth()]} ${parsedDate.getDate()}, ${parsedDate.getFullYear()}`;
 
-    if (language === 'no') {
-        moment.locale('nb');
-        formattedDate = moment(plainDate).format('D. MMMM YYYY');
-    }
-
-    return <span>{formattedDate}</span>;
+  return <span>{formattedDate}</span>;
 };
 
 export default DateCell;

@@ -32,6 +32,7 @@ const EmbedFormDialogContent: FC<EmbedFormDialogContentProps> = (props) => {
                         No embed data.
                     </p>
                 )}
+
                 {!props.isFetchingEmbedData && !props.isErrorEmbedData && props.formId && props.embedData && (
                     <pre>{embedScript(props.embedData?.region, props.embedData?.portalId, props.formId)}</pre>
                 )}
