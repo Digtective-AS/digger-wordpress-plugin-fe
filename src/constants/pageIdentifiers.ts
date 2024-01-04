@@ -1,3 +1,5 @@
 export const HUBSPOT_FORMS_TABLE = 'HUBSPOT_FORMS_TABLE';
 export const ORGANIZATION_SETTINGS = 'ORGANIZATION_SETTINGS';
 export const FETCHED_TOKEN = 'FETCHED_TOKEN';
+
+export const PLUGIN_URL_PAGE_NAME = 'digtective-plugin';

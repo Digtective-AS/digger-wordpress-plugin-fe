@@ -8,6 +8,7 @@ import {
   EmbedDataInterface,
   HubspotFormsInterface,
 } from '../../interfaces/hubspot.interface';
+import {PLUGIN_URL_PAGE_NAME} from "../../constants/pageIdentifiers.ts";
 
 export const useGetHubspotForms = (
   identifier: string,
@@ -18,16 +19,16 @@ export const useGetHubspotForms = (
 
   const queryParams = new URLSearchParams();
   appendQueryParamIfNotEmpty(queryParams, 'rows', rows.toString());
-  appendQueryParamIfNotEmpty(queryParams, 'page', page.toString());
+  appendQueryParamIfNotEmpty(queryParams, 'onPage', page.toString());
 
   const queryKey = generateQueryKey(identifier, queryParams);
 
   return useQuery<AxiosResponse, ApiError<null>, ApiResponse<HubspotFormsInterface>>(
     [`hubspot_forms_${queryKey}`],
-    () => dataFetchDigger.get(`/hubspot/forms?${queryParams}`),
+    () => dataFetchDigger.get(`/hubspot/forms?rows=${rows}&page=${page}`),
     {
       onSuccess: () => {
-        navigate(`${window.location.pathname}?${queryParams.toString()}`, {replace: true});
+        navigate(`${window.location.pathname}?page=${PLUGIN_URL_PAGE_NAME}&rows=${rows}&onPage=${page}`, {replace: true});
       },
     },
   );

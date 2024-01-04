@@ -32609,22 +32609,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   useIsConnectedToHubspot: () => (/* binding */ useIsConnectedToHubspot)
 /* harmony export */ });
 /* harmony import */ var react_query__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-query */ "./node_modules/react-query/es/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../axios/customAxios */ "./src/axios/customAxios.ts");
 /* harmony import */ var _constants_hookConstants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../constants/hookConstants */ "./src/constants/hookConstants.ts");
+/* harmony import */ var _constants_pageIdentifiers_ts__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../constants/pageIdentifiers.ts */ "./src/constants/pageIdentifiers.ts");
+
 
 
 
 
 const useGetHubspotForms = (identifier, rows, page) => {
-  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useNavigate)();
+  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_4__.useNavigate)();
   const queryParams = new URLSearchParams();
   (0,_constants_hookConstants__WEBPACK_IMPORTED_MODULE_2__.appendQueryParamIfNotEmpty)(queryParams, 'rows', rows.toString());
-  (0,_constants_hookConstants__WEBPACK_IMPORTED_MODULE_2__.appendQueryParamIfNotEmpty)(queryParams, 'page', page.toString());
+  (0,_constants_hookConstants__WEBPACK_IMPORTED_MODULE_2__.appendQueryParamIfNotEmpty)(queryParams, 'onPage', page.toString());
   const queryKey = (0,_constants_hookConstants__WEBPACK_IMPORTED_MODULE_2__.generateQueryKey)(identifier, queryParams);
-  return (0,react_query__WEBPACK_IMPORTED_MODULE_0__.useQuery)([`hubspot_forms_${queryKey}`], () => _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__.dataFetchDigger.get(`/hubspot/forms?${queryParams}`), {
+  return (0,react_query__WEBPACK_IMPORTED_MODULE_0__.useQuery)([`hubspot_forms_${queryKey}`], () => _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__.dataFetchDigger.get(`/hubspot/forms?rows=${rows}&page=${page}`), {
     onSuccess: () => {
-      navigate(`${window.location.pathname}?${queryParams.toString()}`, {
+      navigate(`${window.location.pathname}?page=${_constants_pageIdentifiers_ts__WEBPACK_IMPORTED_MODULE_3__.PLUGIN_URL_PAGE_NAME}&rows=${rows}&onPage=${page}`, {
         replace: true
       });
     }
@@ -33573,7 +33575,7 @@ const SimpleTabs = props => {
       className: "h-[16px] object-contain"
     }) : undefined
   })))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_mui_material__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    className: "h-full w-full p-5"
+    className: "h-full w-full"
   }, props.tabs[props.activePanel].renderedComponent));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SimpleTabs);
@@ -33716,11 +33718,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   FETCHED_TOKEN: () => (/* binding */ FETCHED_TOKEN),
 /* harmony export */   HUBSPOT_FORMS_TABLE: () => (/* binding */ HUBSPOT_FORMS_TABLE),
-/* harmony export */   ORGANIZATION_SETTINGS: () => (/* binding */ ORGANIZATION_SETTINGS)
+/* harmony export */   ORGANIZATION_SETTINGS: () => (/* binding */ ORGANIZATION_SETTINGS),
+/* harmony export */   PLUGIN_URL_PAGE_NAME: () => (/* binding */ PLUGIN_URL_PAGE_NAME)
 /* harmony export */ });
 const HUBSPOT_FORMS_TABLE = 'HUBSPOT_FORMS_TABLE';
 const ORGANIZATION_SETTINGS = 'ORGANIZATION_SETTINGS';
 const FETCHED_TOKEN = 'FETCHED_TOKEN';
+const PLUGIN_URL_PAGE_NAME = 'digtective-plugin';
 
 /***/ }),
 
@@ -33966,7 +33970,7 @@ const MainPage = () => {
   const currentTab = location.pathname.split('/').pop();
   const [activePanel, setActivePanel] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(WordpressTabLinks[currentTab] || 0);
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "bg-white h-[calc(100vh-128px)] min-h-[500px] w-[calc(100%-20px)] mt-4"
+    className: "bg-white min-h-[calc(100vh-128px)] w-[calc(100%-20px)] mt-4"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_tabs_simpleTabs_tsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
     activePanel: activePanel,
     setActivePanel: setActivePanel,
