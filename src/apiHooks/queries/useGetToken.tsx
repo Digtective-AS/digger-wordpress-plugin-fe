@@ -1,9 +1,8 @@
 
 import {useQuery} from 'react-query';
 import {AxiosResponse} from 'axios';
-import {authFetch, dataFetch} from '../../axios/customAxios';
-import {OrganizationSettingsInterface} from '../../interfaces/organizationSettings.interface';
-import {ApiError, ApiResponse} from '../../interfaces/apiResponse.type';
+import {authFetch} from '../../axios/customAxios';
+import {ApiError} from '../../interfaces/apiResponse.type';
 
 const useGetToken = (
   identifier: string,

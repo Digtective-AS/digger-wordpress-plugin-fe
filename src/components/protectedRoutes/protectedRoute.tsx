@@ -1,11 +1,6 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC} from 'react';
 import {useAuthStore} from '../../store/authStore';
-import {dataFetch, dataFetchDigger, onlineDataFetch} from '../../axios/customAxios';
-import axiosInterceptor from '../../axios/axiosInterceptors';
 import ConnectToDigger from "../connectToDigger/connectToDigger.tsx";
-import useGetOrganizationSettings from "../../apiHooks/queries/useGetOrganizations.tsx";
-import {OrganizationSettingsInterface} from "../../interfaces/organizationSettings.interface.ts";
-import {useOrganizationSettingsStore} from "../../store/organizationSettingsStore.tsx";
 import {FETCHED_TOKEN, ORGANIZATION_SETTINGS} from "../../constants/pageIdentifiers.ts";
 import LoadingSpinner from "../loadingSpinner/loadingSpinner.tsx";
 import useGetToken from "../../apiHooks/queries/useGetToken.tsx";
@@ -26,8 +21,6 @@ const ProtectedRoute: FC<ProtectedRouteProps> = (props) => {
     isFetching: isLoadingFetchedToken,
     isError: isErrorFetchedToken,
   } = useGetToken(FETCHED_TOKEN, onFetchedTokenRetrieved);
-
-  axiosInterceptor()
 
   if (isLoadingFetchedToken) return (
     <div className="h-[calc(100vh-128px)]">

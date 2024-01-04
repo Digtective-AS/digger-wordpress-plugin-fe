@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import {dataFetch, dataFetchDigger, onlineDataFetch} from "../axios/customAxios.ts";
+import {dataFetchDigger} from "../axios/customAxios.ts";
 
 interface AuthState {
   token: string | null;
@@ -14,8 +14,6 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   login: async (loginToken: string) => {
     set(() => {
-      dataFetch.defaults.headers.Authorization = `Bearer ${loginToken}`;
-      onlineDataFetch.defaults.headers.Authorization = `Bearer ${loginToken}`;
       dataFetchDigger.defaults.headers.Authorization = `Bearer ${loginToken}`;
 
       return {
@@ -27,8 +25,6 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   logout: () => {
     set(() => {
-      dataFetch.defaults.headers.Authorization = 'Bearer null';
-      onlineDataFetch.defaults.headers.Authorization = 'Bearer null';
       dataFetchDigger.defaults.headers.Authorization = 'Bearer null';
 
       return {

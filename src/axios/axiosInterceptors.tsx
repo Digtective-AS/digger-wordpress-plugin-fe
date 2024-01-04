@@ -1,4 +1,4 @@
-import {authFetch, dataFetch, dataFetchDigger, onlineDataFetch} from './customAxios';
+import {authFetch, dataFetchDigger} from './customAxios';
 import closableEnqueueSnackbar from '../components/closableEnqueueSnackbar/closableEnqueueSnackbar';
 import {useAuthStore} from '../store/authStore';
 import {AxiosError} from "axios";
@@ -15,10 +15,16 @@ const handleErrorResponse = (error: AxiosError, logout: () => void) => {
 const axiosInterceptor = () => {
   const { logout } = useAuthStore();
 
+  authFetch.interceptors.request.use((config) => {
+    // @ts-ignore
+    config.headers.set("X-WP-Nonce", wpNonce);
+
+    return config;
+  });
+
   authFetch.interceptors.response.use(
     (response) => response,
     (error) => {
-      console.log(error);
       if (error?.response?.status === 401) {
         closableEnqueueSnackbar('You are not an admin', 'error');
       }
@@ -27,17 +33,7 @@ const axiosInterceptor = () => {
     }
   );
 
-  dataFetch.interceptors.response.use(
-    (response) => response,
-    (error) => handleErrorResponse(error, logout)
-  );
-
   dataFetchDigger.interceptors.response.use(
-    (response) => response,
-    (error) => handleErrorResponse(error, logout)
-  );
-
-  onlineDataFetch.interceptors.response.use(
     (response) => response,
     (error) => handleErrorResponse(error, logout)
   );

@@ -1,18 +1,11 @@
 import axios from 'axios';
 import {rootConfigs} from "../config.ts";
+import axiosInterceptor from "./axiosInterceptors.tsx";
 
 export const authFetch = axios.create({
-    // baseURL: `${window.location.origin}/${window.location.pathname.split('/')[1]}`,
-    baseURL: `${window.location.origin}/`,
+    baseURL: `${window.location.origin}/wordpress/`,
     headers: {
         Accept: 'application/json',
-    },
-});
-
-export const dataFetch = axios.create({
-    baseURL: rootConfigs.baseApiUrl,
-    headers: {
-        'Content-Type': 'application/json',
     },
 });
 
@@ -23,9 +16,4 @@ export const dataFetchDigger = axios.create({
     },
 });
 
-export const onlineDataFetch = axios.create({
-    baseURL: rootConfigs.baseCoreApiUrl,
-    headers: {
-        'Content-Type': 'application/json',
-    },
-});
+axiosInterceptor();
