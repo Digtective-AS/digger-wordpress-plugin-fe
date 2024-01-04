@@ -17,7 +17,14 @@ const axiosInterceptor = () => {
 
   authFetch.interceptors.response.use(
     (response) => response,
-    (error) => handleErrorResponse(error, logout)
+    (error) => {
+      console.log(error);
+      if (error?.response?.status === 401) {
+        closableEnqueueSnackbar('You are not an admin', 'error');
+      }
+
+      return Promise.reject(error);
+    }
   );
 
   dataFetch.interceptors.response.use(
