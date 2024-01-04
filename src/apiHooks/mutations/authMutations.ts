@@ -12,7 +12,7 @@ const useMutateLogin = () => {
 
     return useMutation<AxiosResponse<AuthResponse>, ApiError<null>, AuthRequest>(
         (postRequest) => authFetch.post<AuthResponse, AxiosResponse<AuthResponse>, AuthRequest>(
-            'auth/validate-token',
+            '/wp-json/digtective/v1/connection',
             {
                 token: postRequest.token,
             },

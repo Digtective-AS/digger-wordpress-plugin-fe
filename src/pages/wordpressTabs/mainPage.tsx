@@ -1,17 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {useLocation, useNavigate} from 'react-router-dom';
+import React, {useState} from 'react';
+import {useLocation} from 'react-router-dom';
 import SimpleTabs from "../../components/tabs/simpleTabs.tsx";
-import {dividerClasses} from "@mui/material";
-import HubspotFormsTable from "../../components/tables/hubspotFormsTable.tsx";
 import HubspotTab from "./hubspotTab.tsx";
-import {CustomButton} from "../../components/buttons/customButton.tsx";
-import closableEnqueueSnackbar from "../../components/closableEnqueueSnackbar/closableEnqueueSnackbar.tsx";
-import {useTranslation} from "react-i18next";
-import {FormikValues, useFormik} from "formik";
-import {digtectiveTokenValidationSchema} from "../../components/validations/digtectiveTokenValidationSchema.ts";
-import TextInput from "../../components/inputs/textInput.tsx";
-import ConnectToDigger from "../../components/connectToDigger/connectToDigger.tsx";
-import {useAuthStore} from "../../store/authStore.tsx";
+import {useOrganizationSettingsStore} from "../../store/organizationSettingsStore.tsx";
+import {OrganizationSettingsInterface} from "../../interfaces/organizationSettings.interface.ts";
+import useGetOrganizationSettings from "../../apiHooks/queries/useGetOrganizations.tsx";
+import {ORGANIZATION_SETTINGS} from "../../constants/pageIdentifiers.ts";
+import LoadingSpinner from "../../components/loadingSpinner/loadingSpinner.tsx";
 
 enum WordpressTabLinks {
     'hubspot',
@@ -22,9 +17,32 @@ const MainPage = () => {
     const location = useLocation();
     const currentTab = location.pathname.split('/').pop();
     const [activePanel, setActivePanel] = useState<number>(WordpressTabLinks[currentTab as keyof typeof WordpressTabLinks] || 0);
+    const setOrganizationSettings = useOrganizationSettingsStore((state) => state.setOrganizationSettings);
 
-    return (
-        <div className="bg-white h-[calc(100vh-128px)] min-h-[500px] w-[calc(100%-20px)]  mt-4">
+    const onOrganizationSettingsRetrieved = (organizationSettingsRetrieved: OrganizationSettingsInterface) => {
+        setOrganizationSettings(organizationSettingsRetrieved);
+    };
+
+    const {
+        data: organizationSettings,
+        isFetching: isLoadingOrganizationSettings,
+        isError: isErrorOrganizationSettings,
+    } = useGetOrganizationSettings(ORGANIZATION_SETTINGS, onOrganizationSettingsRetrieved);
+
+    if (isLoadingOrganizationSettings) return (
+        <div className="h-[calc(100vh-128px)]">
+            <LoadingSpinner center color="primary"/>
+        </div>
+    );
+
+    if (isErrorOrganizationSettings) return (
+        <div className="h-[calc(100vh-128px)]">
+            Something went wrong
+        </div>
+    );
+
+    if (organizationSettings) return (
+        <div className="bg-white h-[calc(100vh-128px)] min-h-[500px] w-[calc(100%-20px)] mt-4">
             <SimpleTabs
                 activePanel={activePanel}
                 setActivePanel={setActivePanel}
@@ -35,12 +53,6 @@ const MainPage = () => {
                         identifierName: 'hubspot-panel',
                         renderedComponent: <HubspotTab/>,
                     },
-                    // {
-                    //     tabLabel: 'Google',
-                    //     href: 'google',
-                    //     identifierName: 'google-panel',
-                    //     renderedComponent: <div> google </div>
-                    // },
                 ]}
             />
         </div>

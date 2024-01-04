@@ -32574,7 +32574,7 @@ const useMutateLogin = () => {
   const {
     login
   } = (0,_store_authStore_tsx__WEBPACK_IMPORTED_MODULE_0__.useAuthStore)();
-  return (0,react_query__WEBPACK_IMPORTED_MODULE_1__.useMutation)(postRequest => _axios_customAxios_ts__WEBPACK_IMPORTED_MODULE_2__.authFetch.post('auth/validate-token', {
+  return (0,react_query__WEBPACK_IMPORTED_MODULE_1__.useMutation)(postRequest => _axios_customAxios_ts__WEBPACK_IMPORTED_MODULE_2__.authFetch.post('/wp-json/digtective/v1/connection', {
     token: postRequest.token
   }), {
     onSuccess: ({
@@ -32697,14 +32697,36 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../axios/customAxios */ "./src/axios/customAxios.ts");
 
 
-const useGetOrganizationSettings = (identifier, isLoggedIn, onSuccessRetrieved) => (0,react_query__WEBPACK_IMPORTED_MODULE_0__.useQuery)([`currentUser_${identifier}`], () => _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__.dataFetch.get('organization-settings'), {
-  enabled: isLoggedIn,
+const useGetOrganizationSettings = (identifier, onSuccessRetrieved) => (0,react_query__WEBPACK_IMPORTED_MODULE_0__.useQuery)([`currentUser_${identifier}`], () => _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__.dataFetch.get('organization-settings'), {
   onSuccess: res => {
-    localStorage.setItem('landingPage', res?.data?.data?.landingPage || '');
     onSuccessRetrieved?.(res?.data?.data);
   }
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (useGetOrganizationSettings);
+
+/***/ }),
+
+/***/ "./src/apiHooks/queries/useGetToken.tsx":
+/*!**********************************************!*\
+  !*** ./src/apiHooks/queries/useGetToken.tsx ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react_query__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-query */ "./node_modules/react-query/es/index.js");
+/* harmony import */ var _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../axios/customAxios */ "./src/axios/customAxios.ts");
+
+
+const useGetToken = (identifier, onSuccessRetrievedToken) => (0,react_query__WEBPACK_IMPORTED_MODULE_0__.useQuery)([`currentUser_${identifier}`], () => _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__.authFetch.get('/wp-json/digtective/v1/get-token'), {
+  onSuccess: res => {
+    onSuccessRetrievedToken?.(res.data);
+  }
+});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (useGetToken);
 
 /***/ }),
 
@@ -32753,18 +32775,22 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const handleErrorResponse = (error, logout) => {
+  console.log(error);
+  if (error?.response?.status === 401) {
+    logout();
+    (0,_components_closableEnqueueSnackbar_closableEnqueueSnackbar__WEBPACK_IMPORTED_MODULE_1__["default"])('Your session has expired', 'error');
+  }
+  return Promise.reject(error);
+};
 const axiosInterceptor = () => {
   const {
     logout
   } = (0,_store_authStore__WEBPACK_IMPORTED_MODULE_2__.useAuthStore)();
-  _customAxios__WEBPACK_IMPORTED_MODULE_0__.dataFetch.interceptors.response.use(response => response, error => {
-    console.log(error);
-    if (error?.response?.status === 401) {
-      logout();
-      (0,_components_closableEnqueueSnackbar_closableEnqueueSnackbar__WEBPACK_IMPORTED_MODULE_1__["default"])("Your session has expired", 'error');
-    }
-    return Promise.reject(error);
-  });
+  _customAxios__WEBPACK_IMPORTED_MODULE_0__.authFetch.interceptors.response.use(response => response, error => handleErrorResponse(error, logout));
+  _customAxios__WEBPACK_IMPORTED_MODULE_0__.dataFetch.interceptors.response.use(response => response, error => handleErrorResponse(error, logout));
+  _customAxios__WEBPACK_IMPORTED_MODULE_0__.dataFetchDigger.interceptors.response.use(response => response, error => handleErrorResponse(error, logout));
+  _customAxios__WEBPACK_IMPORTED_MODULE_0__.onlineDataFetch.interceptors.response.use(response => response, error => handleErrorResponse(error, logout));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (axiosInterceptor);
 
@@ -32789,7 +32815,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const authFetch = axios__WEBPACK_IMPORTED_MODULE_1__["default"].create({
-  baseURL: _config_ts__WEBPACK_IMPORTED_MODULE_0__.rootConfigs.baseCoreApiUrl,
+  baseURL: `${window.location.origin}/${window.location.pathname.split('/')[1]}`,
+  // baseURL: rootConfigs.baseCoreApiUrl,
   headers: {
     Accept: 'application/json'
   }
@@ -32797,22 +32824,19 @@ const authFetch = axios__WEBPACK_IMPORTED_MODULE_1__["default"].create({
 const dataFetch = axios__WEBPACK_IMPORTED_MODULE_1__["default"].create({
   baseURL: _config_ts__WEBPACK_IMPORTED_MODULE_0__.rootConfigs.baseApiUrl,
   headers: {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('token')}`
+    'Content-Type': 'application/json'
   }
 });
 const dataFetchDigger = axios__WEBPACK_IMPORTED_MODULE_1__["default"].create({
   baseURL: _config_ts__WEBPACK_IMPORTED_MODULE_0__.rootConfigs.baseDiggerApiUrl,
   headers: {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('token')}`
+    'Content-Type': 'application/json'
   }
 });
 const onlineDataFetch = axios__WEBPACK_IMPORTED_MODULE_1__["default"].create({
   baseURL: _config_ts__WEBPACK_IMPORTED_MODULE_0__.rootConfigs.baseCoreApiUrl,
   headers: {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('token')}`
+    'Content-Type': 'application/json'
   }
 });
 
@@ -33116,15 +33140,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _store_authStore__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../store/authStore */ "./src/store/authStore.tsx");
-/* harmony import */ var _axios_customAxios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../axios/customAxios */ "./src/axios/customAxios.ts");
-/* harmony import */ var _axios_axiosInterceptors__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../axios/axiosInterceptors */ "./src/axios/axiosInterceptors.tsx");
-/* harmony import */ var _connectToDigger_connectToDigger_tsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../connectToDigger/connectToDigger.tsx */ "./src/components/connectToDigger/connectToDigger.tsx");
-/* harmony import */ var _apiHooks_queries_useGetOrganizations_tsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../apiHooks/queries/useGetOrganizations.tsx */ "./src/apiHooks/queries/useGetOrganizations.tsx");
-/* harmony import */ var _store_organizationSettingsStore_tsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../store/organizationSettingsStore.tsx */ "./src/store/organizationSettingsStore.tsx");
-/* harmony import */ var _constants_pageIdentifiers_ts__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../constants/pageIdentifiers.ts */ "./src/constants/pageIdentifiers.ts");
-/* harmony import */ var _loadingSpinner_loadingSpinner_tsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../loadingSpinner/loadingSpinner.tsx */ "./src/components/loadingSpinner/loadingSpinner.tsx");
-
-
+/* harmony import */ var _axios_axiosInterceptors__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../axios/axiosInterceptors */ "./src/axios/axiosInterceptors.tsx");
+/* harmony import */ var _connectToDigger_connectToDigger_tsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../connectToDigger/connectToDigger.tsx */ "./src/components/connectToDigger/connectToDigger.tsx");
+/* harmony import */ var _constants_pageIdentifiers_ts__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../constants/pageIdentifiers.ts */ "./src/constants/pageIdentifiers.ts");
+/* harmony import */ var _loadingSpinner_loadingSpinner_tsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../loadingSpinner/loadingSpinner.tsx */ "./src/components/loadingSpinner/loadingSpinner.tsx");
+/* harmony import */ var _apiHooks_queries_useGetToken_tsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../apiHooks/queries/useGetToken.tsx */ "./src/apiHooks/queries/useGetToken.tsx");
 
 
 
@@ -33137,32 +33157,27 @@ const ProtectedRoute = props => {
   const {
     isLoggedIn
   } = (0,_store_authStore__WEBPACK_IMPORTED_MODULE_1__.useAuthStore)();
-  const setOrganizationSettings = (0,_store_organizationSettingsStore_tsx__WEBPACK_IMPORTED_MODULE_6__.useOrganizationSettingsStore)(state => state.setOrganizationSettings);
-  const onOrganizationSettingsRetrieved = organizationSettingsRetrieved => {
-    setOrganizationSettings(organizationSettingsRetrieved);
+  const login = (0,_store_authStore__WEBPACK_IMPORTED_MODULE_1__.useAuthStore)(state => state.login);
+  const onFetchedTokenRetrieved = fetchedTokenRetrieved => {
+    login(fetchedTokenRetrieved);
   };
   const {
-    data: organizationSettings,
-    isLoading: isLoadingOrganizationSettings,
-    isError: isErrorOrganizationSettings
-  } = (0,_apiHooks_queries_useGetOrganizations_tsx__WEBPACK_IMPORTED_MODULE_5__["default"])(_constants_pageIdentifiers_ts__WEBPACK_IMPORTED_MODULE_7__.ORGANIZATION_SETTINGS, isLoggedIn, onOrganizationSettingsRetrieved);
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    _axios_customAxios__WEBPACK_IMPORTED_MODULE_2__.dataFetch.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
-    _axios_customAxios__WEBPACK_IMPORTED_MODULE_2__.onlineDataFetch.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
-    _axios_customAxios__WEBPACK_IMPORTED_MODULE_2__.dataFetchDigger.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
-  }, [isLoggedIn]);
-  (0,_axios_axiosInterceptors__WEBPACK_IMPORTED_MODULE_3__["default"])();
-  if (!isLoggedIn) return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_connectToDigger_connectToDigger_tsx__WEBPACK_IMPORTED_MODULE_4__["default"], null);
-  if (isLoadingOrganizationSettings) return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    data: fetchedToken,
+    isFetching: isLoadingFetchedToken,
+    isError: isErrorFetchedToken
+  } = (0,_apiHooks_queries_useGetToken_tsx__WEBPACK_IMPORTED_MODULE_6__["default"])(_constants_pageIdentifiers_ts__WEBPACK_IMPORTED_MODULE_4__.FETCHED_TOKEN, onFetchedTokenRetrieved);
+  (0,_axios_axiosInterceptors__WEBPACK_IMPORTED_MODULE_2__["default"])();
+  if (isLoadingFetchedToken) return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "h-[calc(100vh-128px)]"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_loadingSpinner_loadingSpinner_tsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_loadingSpinner_loadingSpinner_tsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
     center: true,
     color: "primary"
   }));
-  if (isErrorOrganizationSettings) return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  if (isErrorFetchedToken) return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "h-[calc(100vh-128px)]"
   }, "Something went wrong");
-  if (organizationSettings) return props.children;
+  if (!fetchedToken && !isLoggedIn) return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_connectToDigger_connectToDigger_tsx__WEBPACK_IMPORTED_MODULE_3__["default"], null);
+  return props.children;
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ProtectedRoute);
 
@@ -33776,11 +33791,13 @@ const hubspotIntegrationUrl = 'https://app-eu1.hubspot.com/oauth/authorize?clien
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   FETCHED_TOKEN: () => (/* binding */ FETCHED_TOKEN),
 /* harmony export */   HUBSPOT_FORMS_TABLE: () => (/* binding */ HUBSPOT_FORMS_TABLE),
 /* harmony export */   ORGANIZATION_SETTINGS: () => (/* binding */ ORGANIZATION_SETTINGS)
 /* harmony export */ });
 const HUBSPOT_FORMS_TABLE = 'HUBSPOT_FORMS_TABLE';
 const ORGANIZATION_SETTINGS = 'ORGANIZATION_SETTINGS';
+const FETCHED_TOKEN = 'FETCHED_TOKEN';
 
 /***/ }),
 
@@ -33989,9 +34006,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var _components_tabs_simpleTabs_tsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/tabs/simpleTabs.tsx */ "./src/components/tabs/simpleTabs.tsx");
 /* harmony import */ var _hubspotTab_tsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./hubspotTab.tsx */ "./src/pages/wordpressTabs/hubspotTab.tsx");
+/* harmony import */ var _store_organizationSettingsStore_tsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../store/organizationSettingsStore.tsx */ "./src/store/organizationSettingsStore.tsx");
+/* harmony import */ var _apiHooks_queries_useGetOrganizations_tsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../apiHooks/queries/useGetOrganizations.tsx */ "./src/apiHooks/queries/useGetOrganizations.tsx");
+/* harmony import */ var _constants_pageIdentifiers_ts__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../constants/pageIdentifiers.ts */ "./src/constants/pageIdentifiers.ts");
+/* harmony import */ var _components_loadingSpinner_loadingSpinner_tsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../components/loadingSpinner/loadingSpinner.tsx */ "./src/components/loadingSpinner/loadingSpinner.tsx");
+
+
+
+
 
 
 
@@ -34003,11 +34028,29 @@ var WordpressTabLinks = /*#__PURE__*/function (WordpressTabLinks) {
   return WordpressTabLinks;
 }(WordpressTabLinks || {});
 const MainPage = () => {
-  const location = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useLocation)();
+  const location = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_7__.useLocation)();
   const currentTab = location.pathname.split('/').pop();
   const [activePanel, setActivePanel] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(WordpressTabLinks[currentTab] || 0);
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "bg-white h-[calc(100vh-128px)] min-h-[500px] w-[calc(100%-20px)]  mt-4"
+  const setOrganizationSettings = (0,_store_organizationSettingsStore_tsx__WEBPACK_IMPORTED_MODULE_3__.useOrganizationSettingsStore)(state => state.setOrganizationSettings);
+  const onOrganizationSettingsRetrieved = organizationSettingsRetrieved => {
+    setOrganizationSettings(organizationSettingsRetrieved);
+  };
+  const {
+    data: organizationSettings,
+    isFetching: isLoadingOrganizationSettings,
+    isError: isErrorOrganizationSettings
+  } = (0,_apiHooks_queries_useGetOrganizations_tsx__WEBPACK_IMPORTED_MODULE_4__["default"])(_constants_pageIdentifiers_ts__WEBPACK_IMPORTED_MODULE_5__.ORGANIZATION_SETTINGS, onOrganizationSettingsRetrieved);
+  if (isLoadingOrganizationSettings) return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "h-[calc(100vh-128px)]"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_loadingSpinner_loadingSpinner_tsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    center: true,
+    color: "primary"
+  }));
+  if (isErrorOrganizationSettings) return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "h-[calc(100vh-128px)]"
+  }, "Something went wrong");
+  if (organizationSettings) return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "bg-white h-[calc(100vh-128px)] min-h-[500px] w-[calc(100%-20px)] mt-4"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_tabs_simpleTabs_tsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
     activePanel: activePanel,
     setActivePanel: setActivePanel,
@@ -34016,14 +34059,7 @@ const MainPage = () => {
       href: 'hubspot',
       identifierName: 'hubspot-panel',
       renderedComponent: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_hubspotTab_tsx__WEBPACK_IMPORTED_MODULE_2__["default"], null)
-    }
-    // {
-    //     tabLabel: 'Google',
-    //     href: 'google',
-    //     identifierName: 'google-panel',
-    //     renderedComponent: <div> google </div>
-    // },
-    ]
+    }]
   }));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MainPage);
@@ -34087,7 +34123,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const router = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.createBrowserRouter)([{
-  path: '/wp-admin/admin.php',
+  path: '/wordpress/wp-admin/admin.php',
   element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_protectedRoutes_protectedRoute_tsx__WEBPACK_IMPORTED_MODULE_2__["default"], null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_pages_wordpressTabs_mainPage_tsx__WEBPACK_IMPORTED_MODULE_1__["default"], null)),
   errorElement: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, " Something went wrong... ")
 }]);
@@ -34106,14 +34142,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   useAuthStore: () => (/* binding */ useAuthStore)
 /* harmony export */ });
-/* harmony import */ var zustand__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! zustand */ "./node_modules/zustand/esm/index.mjs");
+/* harmony import */ var zustand__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! zustand */ "./node_modules/zustand/esm/index.mjs");
+/* harmony import */ var _axios_customAxios_ts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../axios/customAxios.ts */ "./src/axios/customAxios.ts");
 
-const useAuthStore = (0,zustand__WEBPACK_IMPORTED_MODULE_0__.create)(set => ({
-  token: localStorage.getItem('token'),
-  isLoggedIn: !!localStorage.getItem('token'),
+
+const useAuthStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)(set => ({
+  token: null,
+  isLoggedIn: false,
   login: async loginToken => {
     set(() => {
-      localStorage.setItem('token', loginToken);
+      _axios_customAxios_ts__WEBPACK_IMPORTED_MODULE_0__.dataFetch.defaults.headers.Authorization = `Bearer ${loginToken}`;
+      _axios_customAxios_ts__WEBPACK_IMPORTED_MODULE_0__.onlineDataFetch.defaults.headers.Authorization = `Bearer ${loginToken}`;
+      _axios_customAxios_ts__WEBPACK_IMPORTED_MODULE_0__.dataFetchDigger.defaults.headers.Authorization = `Bearer ${loginToken}`;
       return {
         token: loginToken,
         isLoggedIn: true
@@ -34122,8 +34162,9 @@ const useAuthStore = (0,zustand__WEBPACK_IMPORTED_MODULE_0__.create)(set => ({
   },
   logout: () => {
     set(() => {
-      localStorage.removeItem('token');
-      localStorage.removeItem('userInitials');
+      _axios_customAxios_ts__WEBPACK_IMPORTED_MODULE_0__.dataFetch.defaults.headers.Authorization = 'Bearer null';
+      _axios_customAxios_ts__WEBPACK_IMPORTED_MODULE_0__.onlineDataFetch.defaults.headers.Authorization = 'Bearer null';
+      _axios_customAxios_ts__WEBPACK_IMPORTED_MODULE_0__.dataFetchDigger.defaults.headers.Authorization = 'Bearer null';
       return {
         token: null,
         isLoggedIn: false
