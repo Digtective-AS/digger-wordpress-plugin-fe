@@ -43,7 +43,7 @@ const BasicTable: React.FC<BasicTableInterface> = (props) => {
                     minWidth: '30px',
                 }}
                 onClick={() => {
-                    props.onEmbed?.(item);
+                    props.onEmbed?.(item.id);
                     props.setIsEmbedDialogOpen?.(true);
                 }}
             >

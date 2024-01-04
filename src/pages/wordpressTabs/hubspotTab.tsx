@@ -2,22 +2,39 @@ import React from 'react';
 import HubspotFormsTable from "../../components/tables/hubspotFormsTable.tsx";
 import {CustomButton} from "../../components/buttons/customButton.tsx";
 import {hubspotIntegrationUrl} from "../../constants/integrationConstants.tsx";
-import {useOrganizationSettingsStore} from "../../store/organizationSettingsStore.tsx";
+import {useIsConnectedToHubspot} from "../../apiHooks/queries/useGetHubspotForms.ts";
+import LoadingSpinner from "../../components/loadingSpinner/loadingSpinner.tsx";
 
 const HubspotTab = () => {
-    const organizationSettings = useOrganizationSettingsStore((state) => state.organizationSettings);
+  const {
+    data,
+    isFetching,
+    isError
+  } = useIsConnectedToHubspot();
 
-    if (!organizationSettings.isConnectedToHubspot) {
-        return (
-            <CustomButton type="button" onClick={() => window.location.replace(hubspotIntegrationUrl)}>
-                Connect to Hubspot
-            </CustomButton>
-        )
-    }
+  if (isFetching) {
+    return <div className="h-[calc(100vh-128px)]">
+      <LoadingSpinner center color="primary"/>
+    </div>
+  }
 
+  if (isError) {
+    return <div className="h-[calc(100vh-128px)]">
+      Something went wrong
+    </div>
+  }
+
+  if (data?.data.status.message !== 'gatheredEmbedData') {
     return (
-        <HubspotFormsTable/>
-    );
+      <CustomButton type="button" onClick={() => window.location.replace(hubspotIntegrationUrl)}>
+        Connect to Hubspot
+      </CustomButton>
+    )
+  }
+
+  return (
+    <HubspotFormsTable/>
+  );
 };
 
 export default HubspotTab;

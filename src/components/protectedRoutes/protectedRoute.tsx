@@ -4,6 +4,7 @@ import ConnectToDigger from "../connectToDigger/connectToDigger.tsx";
 import {FETCHED_TOKEN, ORGANIZATION_SETTINGS} from "../../constants/pageIdentifiers.ts";
 import LoadingSpinner from "../loadingSpinner/loadingSpinner.tsx";
 import useGetToken from "../../apiHooks/queries/useGetToken.tsx";
+import axiosInterceptor from "../../axios/axiosInterceptors.tsx";
 
 interface ProtectedRouteProps {
   children: React.ReactElement<any, any> | null;
@@ -16,6 +17,9 @@ const ProtectedRoute: FC<ProtectedRouteProps> = (props) => {
   const onFetchedTokenRetrieved = (fetchedTokenRetrieved: string) => {
     login(fetchedTokenRetrieved);
   };
+
+  axiosInterceptor();
+
   const {
     data: fetchedToken,
     isFetching: isLoadingFetchedToken,
