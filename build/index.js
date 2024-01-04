@@ -32752,8 +32752,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const authFetch = axios__WEBPACK_IMPORTED_MODULE_1__["default"].create({
+  // baseURL: `${window.location.origin}/wordpress/`,
   baseURL: `${window.location.origin}/`,
-  // baseURL: `${window.location.origin}/`,
   headers: {
     Accept: 'application/json'
   }

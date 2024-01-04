@@ -3,8 +3,8 @@ import {rootConfigs} from "../config.ts";
 import axiosInterceptor from "./axiosInterceptors.tsx";
 
 export const authFetch = axios.create({
+    // baseURL: `${window.location.origin}/wordpress/`,
     baseURL: `${window.location.origin}/`,
-    // baseURL: `${window.location.origin}/`,
     headers: {
         Accept: 'application/json',
     },
