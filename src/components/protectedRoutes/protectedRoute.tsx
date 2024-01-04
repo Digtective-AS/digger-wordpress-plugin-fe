@@ -38,7 +38,7 @@ const ProtectedRoute: FC<ProtectedRouteProps> = (props) => {
     </div>
   );
 
-  if (!fetchedToken && !isLoggedIn) return (<ConnectToDigger/>);
+  if (!fetchedToken?.data && !isLoggedIn) return (<ConnectToDigger/>);
 
   return (props.children);
 };

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import {dataFetchDigger} from "../axios/customAxios.ts";
+import {authFetch, dataFetchDigger} from "../axios/customAxios.ts";
 
 interface AuthState {
   token: string | null;
