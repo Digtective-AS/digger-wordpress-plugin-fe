@@ -32822,7 +32822,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const authFetch = axios__WEBPACK_IMPORTED_MODULE_1__["default"].create({
   // baseURL: `${window.location.origin}/${window.location.pathname.split('/')[1]}`,
-  baseURL: _config_ts__WEBPACK_IMPORTED_MODULE_0__.rootConfigs.baseCoreApiUrl,
+  baseURL: `${window.location.origin}/`,
   headers: {
     Accept: 'application/json'
   }

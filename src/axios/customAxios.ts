@@ -3,7 +3,7 @@ import {rootConfigs} from "../config.ts";
 
 export const authFetch = axios.create({
     // baseURL: `${window.location.origin}/${window.location.pathname.split('/')[1]}`,
-    baseURL: rootConfigs.baseCoreApiUrl,
+    baseURL: `${window.location.origin}/`,
     headers: {
         Accept: 'application/json',
     },
