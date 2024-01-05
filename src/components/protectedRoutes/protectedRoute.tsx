@@ -18,7 +18,7 @@ const ProtectedRoute: FC<ProtectedRouteProps> = (props) => {
     login(fetchedTokenRetrieved);
   };
 
-    axiosInterceptor();
+  axiosInterceptor();
 
   const {
     data: fetchedToken,
@@ -39,7 +39,6 @@ const ProtectedRoute: FC<ProtectedRouteProps> = (props) => {
   );
 
   if (!fetchedToken?.data || !isLoggedIn) return (<ConnectToDigger/>);
-
 
   return (props.children);
 };
