@@ -32580,6 +32580,7 @@ const useMutateLogin = () => {
     onSuccess: ({
       data: authResponse
     }, postRequestData) => {
+      console.log(authResponse.data);
       if (authResponse.data) {
         login(postRequestData.token);
       } else {
@@ -32654,11 +32655,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const useGetToken = (identifier, onSuccessRetrievedToken) => {
+const useGetToken = (identifier, isLoggedIn, onSuccessRetrievedToken) => {
   const logout = (0,_store_authStore_tsx__WEBPACK_IMPORTED_MODULE_2__.useAuthStore)(state => state.logout);
-  return (0,react_query__WEBPACK_IMPORTED_MODULE_0__.useQuery)([`currentUser_${identifier}`], () => _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__.authFetch.get('/wp-json/digtective/v1/get-token'), {
+  return (0,react_query__WEBPACK_IMPORTED_MODULE_0__.useQuery)([`currentUser_${identifier}_${isLoggedIn}`], () => _axios_customAxios__WEBPACK_IMPORTED_MODULE_1__.authFetch.get('/wp-json/digtective/v1/get-token'), {
     onSuccess: res => {
-      onSuccessRetrievedToken?.(res.data);
+      if (res?.data !== "") {
+        onSuccessRetrievedToken?.(res.data);
+      }
     }
   });
 };
@@ -32712,7 +32715,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const handleErrorResponse = (error, logout) => {
-  console.log(error);
   if (error?.response?.status === 401) {
     logout();
     (0,_components_closableEnqueueSnackbar_closableEnqueueSnackbar__WEBPACK_IMPORTED_MODULE_1__["default"])('Your session has expired', 'error');
@@ -33092,11 +33094,12 @@ const ProtectedRoute = props => {
     login(fetchedTokenRetrieved);
   };
   (0,_axios_axiosInterceptors_tsx__WEBPACK_IMPORTED_MODULE_6__["default"])();
+  console.log('ProtectedRoute isLoggedIn', isLoggedIn);
   const {
     data: fetchedToken,
     isFetching: isLoadingFetchedToken,
     isError: isErrorFetchedToken
-  } = (0,_apiHooks_queries_useGetToken_tsx__WEBPACK_IMPORTED_MODULE_5__["default"])(_constants_pageIdentifiers_ts__WEBPACK_IMPORTED_MODULE_3__.FETCHED_TOKEN, onFetchedTokenRetrieved);
+  } = (0,_apiHooks_queries_useGetToken_tsx__WEBPACK_IMPORTED_MODULE_5__["default"])(_constants_pageIdentifiers_ts__WEBPACK_IMPORTED_MODULE_3__.FETCHED_TOKEN, isLoggedIn, onFetchedTokenRetrieved);
   if (isLoadingFetchedToken) return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "h-[calc(100vh-128px)]"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_loadingSpinner_loadingSpinner_tsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
@@ -33106,7 +33109,7 @@ const ProtectedRoute = props => {
   if (isErrorFetchedToken) return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "h-[calc(100vh-128px)]"
   }, "Something went wrong");
-  if (!fetchedToken?.data && !isLoggedIn) return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_connectToDigger_connectToDigger_tsx__WEBPACK_IMPORTED_MODULE_2__["default"], null);
+  if (!fetchedToken?.data || !isLoggedIn) return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_connectToDigger_connectToDigger_tsx__WEBPACK_IMPORTED_MODULE_2__["default"], null);
   return props.children;
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ProtectedRoute);

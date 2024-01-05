@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 import {useAuthStore} from '../../store/authStore';
 import ConnectToDigger from "../connectToDigger/connectToDigger.tsx";
 import {FETCHED_TOKEN, ORGANIZATION_SETTINGS} from "../../constants/pageIdentifiers.ts";
@@ -12,7 +12,6 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: FC<ProtectedRouteProps> = (props) => {
   const {isLoggedIn} = useAuthStore();
-
   const login = useAuthStore((state) => state.login);
   const onFetchedTokenRetrieved = (fetchedTokenRetrieved: string) => {
     login(fetchedTokenRetrieved);
@@ -20,11 +19,13 @@ const ProtectedRoute: FC<ProtectedRouteProps> = (props) => {
 
   axiosInterceptor();
 
+console.log('ProtectedRoute isLoggedIn', isLoggedIn)
+
   const {
     data: fetchedToken,
     isFetching: isLoadingFetchedToken,
     isError: isErrorFetchedToken,
-  } = useGetToken(FETCHED_TOKEN, onFetchedTokenRetrieved);
+  } = useGetToken(FETCHED_TOKEN, isLoggedIn, onFetchedTokenRetrieved);
 
   if (isLoadingFetchedToken) return (
     <div className="h-[calc(100vh-128px)]">
@@ -37,6 +38,7 @@ const ProtectedRoute: FC<ProtectedRouteProps> = (props) => {
       Something went wrong
     </div>
   );
+
 
   if (!fetchedToken?.data || !isLoggedIn) return (<ConnectToDigger/>);
 

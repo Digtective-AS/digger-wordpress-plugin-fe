@@ -4,7 +4,6 @@ import {useAuthStore} from '../store/authStore';
 import {AxiosError} from "axios";
 
 const handleErrorResponse = (error: AxiosError, logout: () => void) => {
-  console.log(error);
   if (error?.response?.status === 401) {
     logout();
     closableEnqueueSnackbar('Your session has expired', 'error');
