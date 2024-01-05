@@ -28,9 +28,11 @@ const HubspotTab = () => {
 
   if (data?.data.status.message !== 'gatheredEmbedData') {
     return (
-      <CustomButton type="button" onClick={() => window.location.replace(hubspotIntegrationUrl)}>
-        Connect to Hubspot
-      </CustomButton>
+      <div className="p-5">
+        <CustomButton type="button" onClick={() => window.location.replace(hubspotIntegrationUrl)}>
+          Connect to Hubspot
+        </CustomButton>
+      </div>
     )
   }
 

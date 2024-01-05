@@ -33937,10 +33937,12 @@ const HubspotTab = () => {
     }, "Something went wrong");
   }
   if (data?.data.status.message !== 'gatheredEmbedData') {
-    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_buttons_customButton_tsx__WEBPACK_IMPORTED_MODULE_2__.CustomButton, {
+    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "p-5"
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_buttons_customButton_tsx__WEBPACK_IMPORTED_MODULE_2__.CustomButton, {
       type: "button",
       onClick: () => window.location.replace(_constants_integrationConstants_tsx__WEBPACK_IMPORTED_MODULE_3__.hubspotIntegrationUrl)
-    }, "Connect to Hubspot");
+    }, "Connect to Hubspot"));
   }
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_tables_hubspotFormsTable_tsx__WEBPACK_IMPORTED_MODULE_1__["default"], null);
 };
