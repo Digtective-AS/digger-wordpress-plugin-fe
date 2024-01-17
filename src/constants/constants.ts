@@ -13,7 +13,7 @@ export const Colors = {
 
 export type ColorKey = keyof typeof Colors;
 
-export const embedScript = (region?: string, portalId?: string, formId?: string) => () => {
+export const embedScript = (region?: string, portalId?: string, formId?: string) => {
     const givenRegion = region && (region.length > 3 ? 'na1' : region);
     const src = region && (region.length > 3 ? "//js.hsforms.net/forms/embed/v2.js" : `//js-${region}.hsforms.net/forms/embed/v2.js`);
 
