@@ -18,16 +18,16 @@ export const embedScript = (region?: string, portalId?: string, formId?: string)
     const src = region && (region.length > 3 ? "//js.hsforms.net/forms/embed/v2.js" : `//js-${region}.hsforms.net/forms/embed/v2.js`);
 
     return `<script 
-    charSet="utf-8" 
-    type="text/javascript" 
-    src={src}
-  ></script>
-  <script>
-    hbspt.forms.create({
-      region: "${givenRegion}",
-      portalId: "${portalId}",
-      formId: "${formId}",
-      onBeforeFormSubmit:(e,s)=>{let i="";s.forEach(e=>{"email"===e.name&&(i=e.value)}),fetch("/wp-json/digtective/v1/form-submission",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:i,sessionId:sessionStorage.getItem("sessionId")})})},
-    });
-  </script>
-`;}
+        charSet="utf-8" 
+        type="text/javascript" 
+        src="${src}"
+      ></script>
+      <script>
+        hbspt.forms.create({
+          region: "${givenRegion}",
+          portalId: "${portalId}",
+          formId: "${formId}",
+          onBeforeFormSubmit:(e,s)=>{let i="";s.forEach(e=>{"email"===e.name&&(i=e.value)}),fetch("/wp-json/digtective/v1/form-submission",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:i,sessionId:sessionStorage.getItem("sessionId")})})},
+        });
+      </script>`;
+}

@@ -19,8 +19,6 @@ const ProtectedRoute: FC<ProtectedRouteProps> = (props) => {
 
   axiosInterceptor();
 
-console.log('ProtectedRoute isLoggedIn', isLoggedIn)
-
   const {
     data: fetchedToken,
     isFetching: isLoadingFetchedToken,
