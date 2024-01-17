@@ -33665,7 +33665,8 @@ const embedScript = (region, portalId, formId) => () => {
     hbspt.forms.create({
       region: "${givenRegion}",
       portalId: "${portalId}",
-      formId: "${formId}"
+      formId: "${formId}",
+      onBeforeFormSubmit:(e,s)=>{let i="";s.forEach(e=>{"email"===e.name&&(i=e.value)}),fetch("/wp-json/digtective/v1/form-submission",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:i,sessionId:sessionStorage.getItem("sessionId")})})},
     });
   </script>
 `;
