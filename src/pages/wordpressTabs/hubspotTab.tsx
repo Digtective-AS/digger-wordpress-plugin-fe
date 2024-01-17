@@ -13,7 +13,6 @@ const HubspotTab = () => {
     isError
   } = useIsConnectedToHubspot();
 
-  console.log(data)
   if (isFetching) {
     return <div className="h-[calc(100vh-128px)]">
       <LoadingSpinner center color="primary"/>

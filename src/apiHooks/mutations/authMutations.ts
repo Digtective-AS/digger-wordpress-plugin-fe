@@ -19,7 +19,6 @@ const useMutateLogin = () => {
         ),
         {
             onSuccess: ({data: authResponse}, postRequestData) => {
-                console.log(authResponse.data)
                 if (authResponse.data) {
                     login(postRequestData.token);
                 } else {
