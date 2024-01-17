@@ -33653,19 +33653,23 @@ const Colors = {
   green: '#4C956C',
   gray: '#eaeaea'
 };
-const embedScript = (region, portalId, formId) => `<script 
+const embedScript = (region, portalId, formId) => () => {
+  const givenRegion = region && (region.length > 3 ? 'na1' : region);
+  const src = region && (region.length > 3 ? "//js.hsforms.net/forms/embed/v2.js" : `//js-${region}.hsforms.net/forms/embed/v2.js`);
+  return `<script 
     charSet="utf-8" 
     type="text/javascript" 
-    src="//js-${region}.hsforms.net/forms/embed/v2.js"
+    src={src}
   ></script>
   <script>
     hbspt.forms.create({
-      region: "${region}",
+      region: "${givenRegion}",
       portalId: "${portalId}",
       formId: "${formId}"
     });
   </script>
 `;
+};
 
 /***/ }),
 
