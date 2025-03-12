@@ -7,7 +7,6 @@ import ProtectedRoute from "./components/protectedRoutes/protectedRoute.tsx";
 const router = createBrowserRouter([
     {
         path: '/wp-admin/admin.php',
-        // path: '/wordpress/wp-admin/admin.php',
         element: <ProtectedRoute>
             <MainPage/>
         </ProtectedRoute>,
