@@ -45,7 +45,7 @@ const ConnectToDigger = () => {
                     Token Key Code
                 </label>
                     <div className="relative w-[500px] outline-none">
-                        <div className="absolute -inset-[2px] rounded-md border-4 border-primary animate-pulse opacity-20"></div>
+                        <div className="absolute -inset-[3px] rounded-md border-4 border-primary animate-pulse opacity-0"></div>
                         <input
                             id="token"
                             name="token"
@@ -60,7 +60,7 @@ const ConnectToDigger = () => {
                     </div>
 
                 </div>
-                <CustomButton disabled={isLoading} type="submit" className="max-w-[165px] flex justify-center w-full h-[45px]">
+                <CustomButton disabled={isLoading} type="submit" className="max-w-[165px] flex justify-center w-full h-[46px]">
                     Activate Token
                 </CustomButton>
             </form>
