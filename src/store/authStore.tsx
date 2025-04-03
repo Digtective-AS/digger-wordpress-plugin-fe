@@ -26,8 +26,8 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   logout: () => {
     set(() => {
-      dataFetchDigger.defaults.headers.Authorization = 'Bearer null';
-      dataFetchCore.defaults.headers.Authorization = 'Bearer null';
+      dataFetchDigger.defaults.headers.Authorization = '';
+      dataFetchCore.defaults.headers.Authorization = '';
 
       return {
         token: null,
