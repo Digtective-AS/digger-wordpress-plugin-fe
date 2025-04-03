@@ -3,7 +3,7 @@ import Logo from '../../assets/icons/digtective_logo.svg'
 
 const TopHeader = () => {
     return (
-        <div className="bg-white w-[calc(100%-20px)] rounded-lg mt-4 px-[32px] py-[24px] flex justify-between items-center">
+        <div className="bg-white w-[calc(100%-20px)]  rounded-lg mt-4 px-[32px] py-[24px] flex justify-between items-center">
             <div>
                 <img src={Logo} alt=""/>
             </div>
