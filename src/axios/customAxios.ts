@@ -16,3 +16,10 @@ export const dataFetchDigger = axios.create({
         'Content-Type': 'application/json',
     },
 });
+
+export const dataFetchCore = axios.create({
+    baseURL: rootConfigs.baseCoreApiUrl,
+    headers: {
+        'Content-Type': 'application/json',
+    },
+});
