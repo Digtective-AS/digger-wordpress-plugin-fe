@@ -17,7 +17,6 @@ const WoocommerceIntegration = () => {
     return (
         <>
         <div className="p-6 bg-white w-[calc(100%-20px)] rounded-lg flex items-center justify-between mt-4">
-            <p className="text-primary font-medium text-2xl">WooCommerce is Connected by default</p>
             <div
                className={`border w-[179px] h-[62px] relative rounded-lg flex gap-2 items-center justify-center p-4 bg-[#DBEAE2] border-[#4C956C]`}>
                 <img className="h-[31px] w-[31px]" src={hubspot} alt="Hubspot" />
@@ -26,6 +25,7 @@ const WoocommerceIntegration = () => {
                     <img src={greenTick} alt=""/>
                 </div>
             </div>
+            <p className="text-primary font-medium text-2xl">WooCommerce is Connected by default</p>
         </div>
     <div className="w-[calc(100%-20px)] flex justify-start gap-4">
         <div
@@ -34,16 +34,6 @@ const WoocommerceIntegration = () => {
             <p className="text-2xl text-primary font-medium mb-4">Connect your Ad Providers to Digger</p>
 
             <div className="flex justify-between w-full gap-4 items-center">
-                <a target="_blank" href="https://digger-v2.digtective.com/integrations/ad-providers/facebook"
-                   className={`border w-full h-[81px] gap-4 relative rounded-lg flex items-center justify-center p-4 ${integrations.facebook ? "bg-[#DBEAE2] border-[#4C956C]" : ""}`}>
-                    <img src={meta} alt="Meta" />
-                    <p>Meta</p>
-                    {integrations.facebook &&
-                        <div className="bg-white rounded-bl-lg rounded-tr-lg p-1 right-0 top-0 absolute">
-                            <img src={greenTick} alt=""/>
-                        </div>
-                    }
-                </a>
                 <a target="_blank" href="https://digger-v2.digtective.com/integrations/ad-providers/google"
                    className={`border w-full h-[81px] relative gap-4 rounded-lg flex items-center justify-center p-4 ${integrations.google ? "bg-[#DBEAE2] border-[#4C956C]" : ""}`}>
                     <img src={googleAds} alt="Google Ads" />
@@ -54,17 +44,16 @@ const WoocommerceIntegration = () => {
                         </div>
                     }
                 </a>
-                <a target="_blank" href="https://digger-v2.digtective.com/integrations/ad-providers/linked-in"
-                   className={`border w-full h-[81px] relative  gap-4 rounded-lg flex items-center justify-center p-4 ${integrations.linkedin ? "bg-[#DBEAE2] border-[#4C956C]" : ""}`}>
-                    <img src={linkedIn} alt="LinkedIn" />
-                    <p>LinkedIn</p>
-                    {integrations.linkedin &&
+                <a target="_blank" href="https://digger-v2.digtective.com/integrations/ad-providers/facebook"
+                   className={`border w-full h-[81px] gap-4 relative rounded-lg flex items-center justify-center p-4 ${integrations.facebook ? "bg-[#DBEAE2] border-[#4C956C]" : ""}`}>
+                    <img src={meta} alt="Meta" />
+                    <p>Meta</p>
+                    {integrations.facebook &&
                         <div className="bg-white rounded-bl-lg rounded-tr-lg p-1 right-0 top-0 absolute">
                             <img src={greenTick} alt=""/>
                         </div>
                     }
                 </a>
-                <div />
                 <a target="_blank" href="https://digger-v2.digtective.com/integrations/ad-providers/bing"
                    className={`border w-full h-[81px] relative gap-4 rounded-lg flex items-center justify-center p-4 ${integrations.microsoft ? "bg-[#DBEAE2] border-[#4C956C]" : ""}`}>
                     <img src={bing} alt="Bing" />
@@ -85,6 +74,17 @@ const WoocommerceIntegration = () => {
                         </div>
                     }
                 </a>
+                <a target="_blank" href="https://digger-v2.digtective.com/integrations/ad-providers/linked-in"
+                   className={`border w-full h-[81px] relative  gap-4 rounded-lg flex items-center justify-center p-4 ${integrations.linkedin ? "bg-[#DBEAE2] border-[#4C956C]" : ""}`}>
+                    <img src={linkedIn} alt="LinkedIn" />
+                    <p>LinkedIn</p>
+                    {integrations.linkedin &&
+                        <div className="bg-white rounded-bl-lg rounded-tr-lg p-1 right-0 top-0 absolute">
+                            <img src={greenTick} alt=""/>
+                        </div>
+                    }
+                </a>
+                <div />
                 <div />
             </div>
         </div>

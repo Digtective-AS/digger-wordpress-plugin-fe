@@ -76,7 +76,7 @@ const SetupPage = () => {
                 <div className="w-[calc(100%-20px)] mt-4 text-primary rounded-lg bg-white p-4 flex justify-between items-center gap-6">
                     <p className="text-2xl text-primary font-medium">Connect your CRM with Digger</p>
                     <div className="flex items-center gap-4">
-                        <a target="_blank" href="https://digger-v2.digtective.com/integrations/crm/hubspot"
+                        <div onClick={() => navigate('integrations/hubspot')}
                            className={`border w-[179px] h-[62px] relative rounded-lg flex gap-2 items-center justify-center p-4 ${integrations.hubspot ? 'bg-[#DBEAE2] border-[#4C956C]' : ''}`}>
                             <img className="h-[31px] w-[31px]" src={hubspot} alt="Hubspot" />
                             <p className="text-base text-primary">HubSpot</p>
@@ -85,9 +85,9 @@ const SetupPage = () => {
                                     <img src={greenTick} alt=""/>
                                 </div>
                             }
-                        </a>
+                        </div>
 
-                        <a target="_blank" href="https://digger-v2.digtective.com/integrations/crm/salesforce"
+                        <div onClick={() => navigate('integrations/salesforce')}
                            className={`border w-[179px] h-[62px] relative rounded-lg flex gap-2 items-center justify-center p-4 ${integrations.salesforce ? 'bg-[#DBEAE2] border-[#4C956C]' : ''}`}>
                             <img className="h-[31px] w-[31px]" src={salesforce} alt="Hubspot" />
                             <p className="text-base text-primary">Salesforce</p>
@@ -96,7 +96,7 @@ const SetupPage = () => {
                                     <img src={greenTick} alt=""/>
                                 </div>
                             }
-                        </a>
+                        </div>
                     </div>
                 </div>
             )}

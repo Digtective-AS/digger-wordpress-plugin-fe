@@ -38,47 +38,36 @@ const HubSpotIntegration = () => {
                     <p>Connect your Ad Providers to Digger</p>
 
                     <div className="flex justify-between w-full gap-4 items-center">
-                            <a target="_blank" href="https://digger-v2.digtective.com/integrations/ad-providers/facebook"
-                               className={`border w-full h-[81px] gap-4 relative rounded-lg flex items-center justify-center p-4 ${integrations.facebook ? "bg-[#DBEAE2] border-[#4C956C]" : ""}`}>
-                                <img src={meta} alt="Meta" />
-                                <p>Meta</p>
-                                {integrations.facebook &&
+                        <a target="_blank" href="https://digger-v2.digtective.com/integrations/ad-providers/google"
+                           className={`border w-full h-[81px] relative gap-4 rounded-lg flex items-center justify-center p-4 ${integrations.google ? "bg-[#DBEAE2] border-[#4C956C]" : ""}`}>
+                            <img src={googleAds} alt="Google Ads" />
+                            <p>Google Ads</p>
+                            {integrations.google &&
                                 <div className="bg-white rounded-bl-lg rounded-tr-lg p-1 right-0 top-0 absolute">
                                     <img src={greenTick} alt=""/>
                                 </div>
-                                }
-                            </a>
-                            <a target="_blank" href="https://digger-v2.digtective.com/integrations/ad-providers/google"
-                               className={`border w-full h-[81px] relative gap-4 rounded-lg flex items-center justify-center p-4 ${integrations.google ? "bg-[#DBEAE2] border-[#4C956C]" : ""}`}>
-                                <img src={googleAds} alt="Google Ads" />
-                                <p>Google Ads</p>
-                                {integrations.google &&
+                            }
+                        </a>
+                        <a target="_blank" href="https://digger-v2.digtective.com/integrations/ad-providers/facebook"
+                           className={`border w-full h-[81px] gap-4 relative rounded-lg flex items-center justify-center p-4 ${integrations.facebook ? "bg-[#DBEAE2] border-[#4C956C]" : ""}`}>
+                            <img src={meta} alt="Meta" />
+                            <p>Meta</p>
+                            {integrations.facebook &&
                                 <div className="bg-white rounded-bl-lg rounded-tr-lg p-1 right-0 top-0 absolute">
                                     <img src={greenTick} alt=""/>
                                 </div>
-                                }
-                            </a>
-                            <a target="_blank" href="https://digger-v2.digtective.com/integrations/ad-providers/linked-in"
-                               className={`border w-full h-[81px] relative  gap-4 rounded-lg flex items-center justify-center p-4 ${integrations.linkedin ? "bg-[#DBEAE2] border-[#4C956C]" : ""}`}>
-                                <img src={linkedIn} alt="LinkedIn" />
-                                <p>LinkedIn</p>
-                                {integrations.linkedin &&
+                            }
+                        </a>
+                        <a target="_blank" href="https://digger-v2.digtective.com/integrations/ad-providers/bing"
+                           className={`border w-full h-[81px] relative gap-4 rounded-lg flex items-center justify-center p-4 ${integrations.microsoft ? "bg-[#DBEAE2] border-[#4C956C]" : ""}`}>
+                            <img src={bing} alt="Bing" />
+                            <p>Bing</p>
+                            {integrations.microsoft &&
                                 <div className="bg-white rounded-bl-lg rounded-tr-lg p-1 right-0 top-0 absolute">
                                     <img src={greenTick} alt=""/>
                                 </div>
-                                }
-                            </a>
-                            <div />
-                            <a target="_blank" href="https://digger-v2.digtective.com/integrations/ad-providers/bing"
-                               className={`border w-full h-[81px] relative gap-4 rounded-lg flex items-center justify-center p-4 ${integrations.microsoft ? "bg-[#DBEAE2] border-[#4C956C]" : ""}`}>
-                                <img src={bing} alt="Bing" />
-                                <p>Bing</p>
-                                {integrations.microsoft &&
-                                <div className="bg-white rounded-bl-lg rounded-tr-lg p-1 right-0 top-0 absolute">
-                                    <img src={greenTick} alt=""/>
-                                </div>
-                                }
-                            </a>
+                            }
+                        </a>
                         <a target="_blank" href="https://digger-v2.digtective.com/integrations/ad-providers/bing"
                            className={`border w-full h-[81px] relative gap-4 rounded-lg flex items-center justify-center p-4 ${integrations.tiktok ? "bg-[#DBEAE2] border-[#4C956C]" : ""}`}>
                             <img src={tiktok} alt="Bing" />
@@ -89,8 +78,19 @@ const HubSpotIntegration = () => {
                                 </div>
                             }
                         </a>
-                            <div />
-                        </div>
+                        <a target="_blank" href="https://digger-v2.digtective.com/integrations/ad-providers/linked-in"
+                           className={`border w-full h-[81px] relative  gap-4 rounded-lg flex items-center justify-center p-4 ${integrations.linkedin ? "bg-[#DBEAE2] border-[#4C956C]" : ""}`}>
+                            <img src={linkedIn} alt="LinkedIn" />
+                            <p>LinkedIn</p>
+                            {integrations.linkedin &&
+                                <div className="bg-white rounded-bl-lg rounded-tr-lg p-1 right-0 top-0 absolute">
+                                    <img src={greenTick} alt=""/>
+                                </div>
+                            }
+                        </a>
+                        <div />
+                        <div />
+                    </div>
                 </div>
             </div>
             }
