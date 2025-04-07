@@ -19,7 +19,7 @@ export const useGetOrganizationName = (
         {
             onSuccess : (response) => {
                 if(response?.data?.data.organizationType != null) {
-                    navigate('/wp-admin/admin.php/integrations/woocommerce')
+                    navigate('integrations/woocommerce')
                 }
             }
         }

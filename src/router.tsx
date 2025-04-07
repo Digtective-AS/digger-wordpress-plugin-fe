@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createHashRouter } from "react-router-dom";
 import React from "react";
 import MainPage from "./pages/wordpressTabs/mainPage.tsx";
 import ProtectedRoute from "./components/protectedRoutes/protectedRoute.tsx";
@@ -8,9 +8,9 @@ const HubSpotIntegration = React.lazy(() => import("./pages/wordpressTabs/Hubspo
 const SalesforceIntegration = React.lazy(() => import("./pages/wordpressTabs/SalesForcePage.tsx"));
 const WoocommerceIntegration = React.lazy(() => import("./pages/wordpressTabs/WoocommercePage.tsx"));
 
-const router = createBrowserRouter([
+const router = createHashRouter([
     {
-        path: "/wp-admin/admin.php",
+        path: "/",
         element: (
             <ProtectedRoute>
                 <MainPage />

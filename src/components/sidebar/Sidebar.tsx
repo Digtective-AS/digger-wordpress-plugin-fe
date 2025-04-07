@@ -52,15 +52,15 @@ const Sidebar = () => {
                     }`}
                 >
                     <ul className="pl-8 pt-2 flex flex-col gap-2">
-                        <li onClick={() => navigate('/wp-admin/admin.php/integrations/hubspot')} className="flex hover:cursor-pointer items-center gap-2">
+                        <li onClick={() => navigate('integrations/hubspot')} className="flex hover:cursor-pointer items-center gap-2">
                             <img src={hubspot} alt="Sub Item" />
                             Hubspot
                         </li>
-                        <li onClick={() => navigate('/wp-admin/admin.php/integrations/woocommerce')} className="flex hover:cursor-pointer items-center gap-2">
+                        <li onClick={() => navigate('integrations/woocommerce')} className="flex hover:cursor-pointer items-center gap-2">
                             <img src={woo} alt="Sub Item" />
                             WooCommerce
                         </li>
-                        <li onClick={() => navigate('/wp-admin/admin.php/integrations/salesforce')} className="flex hover:cursor-pointer items-center gap-2">
+                        <li onClick={() => navigate('integrations/salesforce')} className="flex hover:cursor-pointer items-center gap-2">
                             <img src={salesforce} alt="Sub Item" />
                             Salesforce
                         </li>
