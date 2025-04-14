@@ -18,7 +18,7 @@ const HubSpotIntegration = () => {
     return (
         <>
         <div className="p-6 bg-white w-[calc(100%-20px)] rounded-lg flex items-center justify-between mt-4">
-            <p className="text-primary font-medium text-2xl">{integrations.salesforce ? 'Connected' :'Connect Hubspot with Digger'}</p>
+            <p className="text-primary font-medium text-2xl">{integrations.hubspot ? 'Connected' :'Connect Hubspot with Digger'}</p>
             <a target="_blank" href="https://digger-v2.digtective.com/integrations/crm/hubspot"
                className={`border w-[179px] h-[62px] relative rounded-lg flex gap-2 items-center justify-center p-4 ${integrations.hubspot ? 'bg-[#DBEAE2] border-[#4C956C]' : ''}`}>
                 <img className="h-[31px] w-[31px]" src={hubspot} alt="Hubspot" />

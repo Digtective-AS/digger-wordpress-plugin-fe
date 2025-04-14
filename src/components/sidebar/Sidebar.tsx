@@ -12,10 +12,22 @@ import linkedin from '../../assets/icons/sidebarLinkedin.svg';
 import google from '../../assets/icons/sidebarGoogle.svg';
 import bing from '../../assets/icons/sidebarBing.svg';
 import tiktok from '../../assets/icons/sidebarTiktok.svg';
+import {useGetOrganizationName} from "../../apiHooks/queries/useGetOrganization.ts";
+import {useGetIntegrations} from "../../apiHooks/queries/useGetIntegrations.ts";
 
 const Sidebar = () => {
     const [openSection, setOpenSection] = useState(null);
     const navigate = useNavigate();
+
+    const { data } = useGetOrganizationName("GET_ORGANIZATION");
+
+    const { data: integrationData } = useGetIntegrations("GET_INTEGRATIONS");
+
+    const integrationsHubspot = integrationData?.data?.data.hubspot;
+
+    const integrationsSalesforce = integrationData?.data?.data.salesforce;
+
+    const organization = data?.data?.data?.organizationType
 
     const toggleSection = (section: any) => {
         setOpenSection((prev) => (prev === section ? null : section));
@@ -23,7 +35,26 @@ const Sidebar = () => {
 
     return (
         <div className="bg-white w-[217px] h-[424px] rounded-lg mt-4 px-4 py-6 flex flex-col gap-2">
-            <div className="bg-[#CEDADF] w-full p-3 rounded-lg flex items-center gap-2">
+            <div
+                onClick={() => {
+                    if (!organization) return;
+
+                    if (organization === 'eCommerce') {
+                        navigate('/integrations/woocommerce');
+                    } else {
+                        if (integrationsHubspot && integrationsSalesforce) {
+                            navigate('/integrations/crm');
+                        } else if (integrationsHubspot) {
+                            navigate('/integrations/hubspot');
+                        } else if (integrationsSalesforce) {
+                            navigate('/integrations/salesforce');
+                        } else {
+                            console.warn('No CRM integration available.');
+                        }
+                    }
+                }}
+                className="bg-[#CEDADF] w-full p-3 rounded-lg flex items-center gap-2 hover:cursor-pointer"
+            >
                 <img src={settingIcon} alt="Setup" />
                 <span>Setup</span>
             </div>

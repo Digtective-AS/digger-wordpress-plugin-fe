@@ -3,6 +3,7 @@ import React from "react";
 import MainPage from "./pages/wordpressTabs/mainPage.tsx";
 import ProtectedRoute from "./components/protectedRoutes/protectedRoute.tsx";
 import SetupPage from "./pages/wordpressTabs/setupPage.tsx";
+import CrmIntegration from "./pages/wordpressTabs/CrmIntegrations.tsx";
 
 const HubSpotIntegration = React.lazy(() => import("./pages/wordpressTabs/HubspotPage.tsx"));
 const SalesforceIntegration = React.lazy(() => import("./pages/wordpressTabs/SalesForcePage.tsx"));
@@ -21,6 +22,14 @@ const router = createHashRouter([
             {
                 index: true,
                 element: <SetupPage />,
+            },
+            {
+                path: "integrations/crm",
+                element: (
+                    <React.Suspense fallback={<div>Loading...</div>}>
+                        <CrmIntegration />
+                    </React.Suspense>
+                ),
             },
             {
                 path: "integrations/hubspot",
