@@ -18,9 +18,7 @@ export const useGetOrganizationName = (
         () => dataFetchDigger.get(`organization-settings`),
         {
             onSuccess : (response) => {
-                if(response?.data?.data.organizationType != null) {
-                    navigate('integrations/woocommerce')
-                }
+
             }
         }
     );

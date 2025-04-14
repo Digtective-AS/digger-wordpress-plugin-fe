@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import settingIcon from "../../assets/icons/settingIcon.svg";
 import generalIcon from "../../assets/icons/generalIcon.svg";
 import arrow from "../../assets/icons/arrow.svg";
@@ -29,6 +29,12 @@ const Sidebar = () => {
 
     const organization = data?.data?.data?.organizationType
 
+    useEffect(() => {
+        if(data?.data?.data.organizationType != null) {
+            navigate('integrations/woocommerce')
+        }
+    },[data])
+
     const toggleSection = (section: any) => {
         setOpenSection((prev) => (prev === section ? null : section));
     };
@@ -42,7 +48,7 @@ const Sidebar = () => {
                     if (organization === 'eCommerce') {
                         navigate('/integrations/woocommerce');
                     } else {
-                        if (integrationsHubspot && integrationsSalesforce) {
+                        if (integrationsHubspot && integrationsSalesforce || !integrationsSalesforce && !integrationsHubspot) {
                             navigate('/integrations/crm');
                         } else if (integrationsHubspot) {
                             navigate('/integrations/hubspot');
